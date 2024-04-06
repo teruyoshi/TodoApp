@@ -1,0 +1,12 @@
+services:
+  front:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      # - .:/app
+      - ./front:/app/front
+    tty: "true"
