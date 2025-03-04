@@ -1,0 +1,57 @@
+# プロジェクトのルートディレクトリと各種ディレクトリの設定
+root = "."
+testdata_dir = "testdata"
+tmp_dir = "tmp"
+
+[build]
+  # ビルドに関する設定
+  cmd = "go build -o ./tmp/main ./cmd/template_react_go"
+  bin = "./tmp/main"
+  delay = 2000  # ビルドの遅延時間を2秒に増加
+
+  # ビルド時に監視対象から除外するディレクトリ・ファイル
+  exclude_dir = ["assets", "tmp", "vendor", "testdata"]
+  exclude_regex = ["_test.go", "\\.swp$", "\\.tmp$", "~$"]  # 一時ファイルを除外
+
+  # 監視対象の拡張子
+  include_ext = ["go"]  # Goファイルのみを監視
+
+  # その他のビルドオプション
+  exclude_unchanged = true  # 未変更ファイルの除外を有効化
+  follow_symlink = false
+  kill_delay = "500ms"  # 終了待機時間を設定
+  log = "build-errors.log"
+  poll = false  # 必要に応じてtrueに設定
+  poll_interval = 0
+  rerun = false
+  rerun_delay = 500
+  send_interrupt = false
+  stop_on_error = false
+
+[color]
+  # カラー設定
+  app = ""
+  build = "yellow"
+  main = "magenta"
+  runner = "green"
+  watcher = "cyan"
+
+[log]
+  # ログ表示に関する設定
+  main_only = false
+  silent = false
+  time = false
+
+[misc]
+  # その他の設定
+  clean_on_exit = false
+
+[proxy]
+  # プロキシ設定（使用しない場合は無効）
+  enabled = false
+  proxy_port = 0
+
+[screen]
+  # ターミナル画面に関する設定
+  clear_on_rebuild = false
+  keep_scroll = true

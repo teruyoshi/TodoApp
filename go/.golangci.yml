@@ -1,0 +1,10 @@
+linters-settings:
+  errcheck:
+    check-type-assertions: true
+linters:
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+run:
+  timeout: 5m

@@ -1,0 +1,52 @@
+services:
+  front:
+    build:
+      context: .
+      dockerfile: docker/front/Dockerfile
+      target: dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./front:/home/ubuntu/app/front
+    tty: "true"
+
+  go:
+    build:
+      context: .
+      dockerfile: docker/go/Dockerfile
+      target: builder
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./go/.env
+    depends_on:
+      - db
+    networks:
+      - db_network
+    volumes:
+      - ./go:/home/go/src/app
+    tty: "true"
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LANG: ja_JP.UTF-8
+      LANGUAGE: ja_JP:ja
+      LC_ALL: ja_JP.UTF-8
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - db_network
+
+volumes:
+  db_data:
+    name: template-react-go
+
+networks:
+  db_network:
