@@ -46,7 +46,7 @@ services:
 
 volumes:
   db_data:
-    name: template-react-go
+    name: todo-app
 
 networks:
   db_network:

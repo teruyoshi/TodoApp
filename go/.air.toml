@@ -5,7 +5,7 @@ tmp_dir = "tmp"
 
 [build]
   # ビルドに関する設定
-  cmd = "go build -o ./tmp/main ./cmd/template_react_go"
+  cmd = "go build -o ./tmp/main ./cmd/todo_app"
   bin = "./tmp/main"
   delay = 2000  # ビルドの遅延時間を2秒に増加
 
