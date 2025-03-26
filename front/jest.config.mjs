@@ -31,6 +31,7 @@ export default {
           transform: {
             react: {
               runtime: 'automatic', // React 17以降の自動JSX変換
+              refresh: false,
             },
           },
         },
