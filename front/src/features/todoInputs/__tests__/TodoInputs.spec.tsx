@@ -1,8 +1,13 @@
 import { render } from '@testing-library/react'
-import { TodoInputs } from '../'
+import { TodoInput } from '../'
+import { DayjsLocalizationProvider } from '../../../providers'
 
 const setup = () => {
-  const screen = render(<TodoInputs />)
+  const screen = render(
+    <DayjsLocalizationProvider>
+      <TodoInput />
+    </DayjsLocalizationProvider>
+  )
 
   return {
     ...screen,
@@ -15,5 +20,11 @@ describe('TodoInputs', () => {
     const title = getByRole('heading', { name: 'Todoを追加' })
 
     expect(title).toBeInTheDocument()
+  })
+  describe('フォーム送信', () => {
+    it('Todo のタイトルを入力出来る', () => {})
+    it('Todo の説明を入力出来る', () => {})
+    it('Todo の期間を入力出来る', () => {})
+    it('Todo のデータを送信できる', () => {})
   })
 })

@@ -1,1 +1,1 @@
-export { default as TodoInputs } from './components/TodoInputs'
+export { default as TodoInput } from './components/TodoInput'
