@@ -21,10 +21,4 @@ describe('TodoInputs', () => {
 
     expect(title).toBeInTheDocument()
   })
-  describe('フォーム送信', () => {
-    it('Todo のタイトルを入力出来る', () => {})
-    it('Todo の説明を入力出来る', () => {})
-    it('Todo の期間を入力出来る', () => {})
-    it('Todo のデータを送信できる', () => {})
-  })
 })
