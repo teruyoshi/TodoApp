@@ -1,5 +1,4 @@
-import React from 'react'
-import { TodoInputForm, TodoInputTitle } from './'
+import { TodoInputForm, TodoInputTitle } from '.'
 
 function TodoInput() {
   return (

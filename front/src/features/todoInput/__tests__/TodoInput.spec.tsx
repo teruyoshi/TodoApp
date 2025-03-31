@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import { TodoInput } from '../'
+import { TodoInput } from '..'
 import { DayjsLocalizationProvider } from '../../../providers'
 
 const setup = () => {

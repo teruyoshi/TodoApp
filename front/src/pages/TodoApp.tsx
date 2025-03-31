@@ -1,5 +1,4 @@
-import React from 'react'
-import { TodoInput } from '@features/todoInputs'
+import { TodoInput } from '@features/todoInput'
 import { Typography } from '@mui/material'
 
 function TodoApp() {
