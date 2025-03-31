@@ -11,7 +11,7 @@
       "react": {
         "runtime": "automatic", // 新しい JSX トランスフォームを使用
         "development": true, // 開発モードの場合は true に設定
-        "refresh": true // React Refresh を使用する場合は true に設定
+        "refresh": false // React Refresh を使用する場合は true に設定
       }
     },
     "target": "es2022",
