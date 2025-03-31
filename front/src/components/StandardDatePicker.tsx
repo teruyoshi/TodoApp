@@ -1,5 +1,4 @@
 import { DatePicker } from '@mui/x-date-pickers'
-import React from 'react'
 
 interface StandardDatePickerProps {
   children: string
@@ -11,6 +10,7 @@ function StandardDatePicker(props: StandardDatePickerProps) {
   return (
     <DatePicker
       label={children}
+      sx={{ minWidth: '10em' }}
       slotProps={{ textField: { variant: 'standard' } }}
     />
   )
