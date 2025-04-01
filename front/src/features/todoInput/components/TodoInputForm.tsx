@@ -11,6 +11,7 @@ import {
 } from './formParts'
 import { Box } from '@mui/material'
 import { fitContentHorizontalSx } from '@styles'
+import { useForm } from 'react-hook-form'
 
 interface TodoInputFormProps {
   onSubmitHandler: () => void
@@ -18,12 +19,12 @@ interface TodoInputFormProps {
 
 function TodoInputForm(props: TodoInputFormProps) {
   const { onSubmitHandler } = props
+  const { handleSubmit } = useForm()
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault()
+      onSubmit={handleSubmit((data) => {
         onSubmitHandler()
-      }}
+      })}
     >
       <LeftMarginIndentBox level={1}>
         <VerticalBox gap={3} sx={fitContentHorizontalSx}>
