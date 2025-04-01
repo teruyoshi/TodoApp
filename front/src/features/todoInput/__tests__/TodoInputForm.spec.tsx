@@ -2,6 +2,7 @@ import { render } from '@testing-library/react'
 import { TodoInputForm } from '../components'
 import userEvent from '@testing-library/user-event'
 import { DayjsLocalizationProvider } from '../../../providers'
+import dayjs from 'dayjs'
 
 const setup = (onSubmitHandlerMock?: jest.Func) => {
   const onSubmitHandler = onSubmitHandlerMock || jest.fn()
@@ -49,8 +50,8 @@ describe('TodoInputForm', () => {
     expect(onSubmitHandlerMock).toHaveBeenCalledWith({
       title: '',
       description: '',
-      dateFrom: '',
-      dateTo: '',
+      dateFrom: dayjs().format('YYYY/MM/DD'),
+      dateTo: dayjs().format('YYYY/MM/DD'),
     })
   })
 

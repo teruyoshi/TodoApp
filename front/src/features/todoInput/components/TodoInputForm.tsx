@@ -12,6 +12,7 @@ import {
 import { Box } from '@mui/material'
 import { fitContentHorizontalSx } from '@styles'
 import { useForm } from 'react-hook-form'
+import dayjs from 'dayjs'
 
 interface TodoInputFormInputs {
   title: string
@@ -30,8 +31,8 @@ function TodoInputForm(props: TodoInputFormProps) {
     defaultValues: {
       title: '',
       description: '',
-      dateFrom: '',
-      dateTo: '',
+      dateFrom: dayjs().format('YYYY/MM/DD'),
+      dateTo: dayjs().format('YYYY/MM/DD'),
     },
   })
 
