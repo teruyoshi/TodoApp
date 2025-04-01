@@ -4,7 +4,11 @@ function TodoInput() {
   return (
     <>
       <TodoInputTitle />
-      <TodoInputForm />
+      <TodoInputForm
+        onSubmitHandler={() => {
+          console.log('submit')
+        }}
+      />
     </>
   )
 }

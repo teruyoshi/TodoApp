@@ -12,9 +12,19 @@ import {
 import { Box } from '@mui/material'
 import { fitContentHorizontalSx } from '@styles'
 
-function TodoInputForm() {
+interface TodoInputFormProps {
+  onSubmitHandler: () => void
+}
+
+function TodoInputForm(props: TodoInputFormProps) {
+  const { onSubmitHandler } = props
   return (
-    <form>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault()
+        onSubmitHandler()
+      }}
+    >
       <LeftMarginIndentBox level={1}>
         <VerticalBox gap={3} sx={fitContentHorizontalSx}>
           <Box sx={fitContentHorizontalSx}>

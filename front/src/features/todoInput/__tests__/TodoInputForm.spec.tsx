@@ -7,7 +7,7 @@ const setup = (onSubmitHandlerMock?: jest.Func) => {
   const onSubmitHandler = onSubmitHandlerMock || jest.fn()
   const screen = render(
     <DayjsLocalizationProvider>
-      <TodoInputForm />
+      <TodoInputForm onSubmitHandler={onSubmitHandler} />
     </DayjsLocalizationProvider>
   )
 
@@ -29,8 +29,7 @@ const setup = (onSubmitHandlerMock?: jest.Func) => {
 }
 
 describe('TodoInputForm', () => {
-  // TODO skipを外して実装する
-  it.skip('入力した Todo のデータを送信できる', async () => {
+  it('送信ボタンを押すとフォームの送信関数が発火する' /* '入力した Todo のデータを送信できる' */, async () => {
     const onSubmitHandlerMock = jest.fn()
 
     const { submitButton } = setup(onSubmitHandlerMock)
