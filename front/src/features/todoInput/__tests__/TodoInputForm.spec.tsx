@@ -30,14 +30,20 @@ const setup = (onSubmitHandlerMock?: jest.Func) => {
 }
 
 describe('TodoInputForm', () => {
-  it('送信ボタンを押すとフォームの送信関数が発火する' /* '入力した Todo のデータを送信できる' */, async () => {
+  it('送信ボタンを押すと入力したタイトルと共にフォームの送信関数が発火する' /* '入力した Todo のデータを送信できる' */, async () => {
     const onSubmitHandlerMock = jest.fn()
 
-    const { submitButton } = setup(onSubmitHandlerMock)
+    const { titleInput, submitButton } = setup(onSubmitHandlerMock)
 
+    await userEvent.type(titleInput, '国語の勉強')
     await userEvent.click(submitButton)
 
-    expect(onSubmitHandlerMock).toHaveBeenCalled()
+    expect(onSubmitHandlerMock).toHaveBeenCalledWith({
+      title: '国語の勉強',
+      description: '',
+      dateFrom: dayjs().format('YYYY/MM/DD'),
+      dateTo: dayjs().format('YYYY/MM/DD'),
+    })
   })
 
   it('入力せず送信ボタンを押すと、フォームの送信関数が初期値で呼ばれる', async () => {
