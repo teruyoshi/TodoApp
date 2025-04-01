@@ -1,12 +1,13 @@
 import { TodoInputForm, TodoInputTitle } from '.'
+import type { TodoInputFormInputs } from '.'
 
 function TodoInput() {
   return (
     <>
       <TodoInputTitle />
       <TodoInputForm
-        onSubmitHandler={() => {
-          console.log('submit')
+        onSubmitHandler={(data: TodoInputFormInputs) => {
+          console.log(data)
         }}
       />
     </>

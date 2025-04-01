@@ -14,7 +14,7 @@ import { fitContentHorizontalSx } from '@styles'
 import { useForm } from 'react-hook-form'
 import dayjs from 'dayjs'
 
-interface TodoInputFormInputs {
+export interface TodoInputFormInputs {
   title: string
   description: string
   dateFrom: string
