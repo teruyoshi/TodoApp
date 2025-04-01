@@ -36,7 +36,22 @@ describe('TodoInputForm', () => {
 
     await userEvent.click(submitButton)
 
-    expect(onSubmitHandlerMock).toHaveBeenCalledWith()
+    expect(onSubmitHandlerMock).toHaveBeenCalled()
+  })
+
+  it('入力せず送信ボタンを押すと、フォームの送信関数が初期値で呼ばれる', async () => {
+    const onSubmitHandlerMock = jest.fn()
+
+    const { submitButton } = setup(onSubmitHandlerMock)
+
+    await userEvent.click(submitButton)
+
+    expect(onSubmitHandlerMock).toHaveBeenCalledWith({
+      title: '',
+      description: '',
+      dateFrom: '',
+      dateTo: '',
+    })
   })
 
   it('Todo のタイトルを入力出来る', async () => {

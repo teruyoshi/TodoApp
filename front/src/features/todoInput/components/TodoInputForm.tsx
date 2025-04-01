@@ -13,17 +13,32 @@ import { Box } from '@mui/material'
 import { fitContentHorizontalSx } from '@styles'
 import { useForm } from 'react-hook-form'
 
+interface TodoInputFormInputs {
+  title: string
+  description: string
+  dateFrom: string
+  dateTo: string
+}
+
 interface TodoInputFormProps {
-  onSubmitHandler: () => void
+  onSubmitHandler: (data: TodoInputFormInputs) => void
 }
 
 function TodoInputForm(props: TodoInputFormProps) {
   const { onSubmitHandler } = props
-  const { handleSubmit } = useForm()
+  const { handleSubmit } = useForm<TodoInputFormInputs>({
+    defaultValues: {
+      title: '',
+      description: '',
+      dateFrom: '',
+      dateTo: '',
+    },
+  })
+
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        onSubmitHandler()
+        onSubmitHandler(data)
       })}
     >
       <LeftMarginIndentBox level={1}>
