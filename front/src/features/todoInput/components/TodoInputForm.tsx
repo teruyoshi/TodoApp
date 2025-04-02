@@ -49,7 +49,7 @@ function TodoInputForm(props: TodoInputFormProps) {
             <Box sx={fitContentHorizontalSx}>
               <TodoTitleTextField name="title" />
             </Box>
-            <TodoDescriptionTextField />
+            <TodoDescriptionTextField name="description" />
             <HorizontalBottomAlignmentBox gap={2} sx={fitContentHorizontalSx}>
               <TodoPeriodInputs />
             </HorizontalBottomAlignmentBox>
