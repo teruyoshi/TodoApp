@@ -30,21 +30,28 @@ const setup = (onSubmitHandlerMock?: jest.Func) => {
 }
 
 describe('TodoInputForm', () => {
-  it('送信ボタンを押すと入力したタイトル、説明と共にフォームの送信関数が発火する' /* '入力した Todo のデータを送信できる' */, async () => {
+  it('入力した Todo のデータを送信できる', async () => {
     const onSubmitHandlerMock = jest.fn()
 
-    const { titleInput, descriptionInput, submitButton } =
-      setup(onSubmitHandlerMock)
+    const {
+      titleInput,
+      descriptionInput,
+      dateFromInput,
+      dateToInput,
+      submitButton,
+    } = setup(onSubmitHandlerMock)
 
     await userEvent.type(titleInput, '国語の勉強')
     await userEvent.type(descriptionInput, '音読と漢字の宿題')
+    await userEvent.type(dateFromInput, '20250101')
+    await userEvent.type(dateToInput, '20250227')
     await userEvent.click(submitButton)
 
     expect(onSubmitHandlerMock).toHaveBeenCalledWith({
       title: '国語の勉強',
       description: '音読と漢字の宿題',
-      dateFrom: dayjs().format('YYYY/MM/DD'),
-      dateTo: dayjs().format('YYYY/MM/DD'),
+      dateFrom: dayjs('2025/01/01'),
+      dateTo: dayjs('2025/02/27'),
     })
   })
 
@@ -58,8 +65,8 @@ describe('TodoInputForm', () => {
     expect(onSubmitHandlerMock).toHaveBeenCalledWith({
       title: '',
       description: '',
-      dateFrom: dayjs().format('YYYY/MM/DD'),
-      dateTo: dayjs().format('YYYY/MM/DD'),
+      dateFrom: dayjs(dayjs().format('YYYY/MM/DD')),
+      dateTo: dayjs(dayjs().format('YYYY/MM/DD')),
     })
   })
 
@@ -84,7 +91,7 @@ describe('TodoInputForm', () => {
 
     await userEvent.type(dateFromInput, '20250101')
 
-    expect(dateFromInput).toHaveValue('2025/01/01')
+    expect(dateFromInput).toHaveValue(dayjs('2025/01/01').format('YYYY/MM/DD'))
   })
 
   it('Todo の終了日を入力出来る', async () => {
@@ -92,6 +99,6 @@ describe('TodoInputForm', () => {
 
     await userEvent.type(dateToInput, '20250227')
 
-    expect(dateToInput).toHaveValue('2025/02/27')
+    expect(dateToInput).toHaveValue(dayjs('2025/02/27').format('YYYY/MM/DD'))
   })
 })

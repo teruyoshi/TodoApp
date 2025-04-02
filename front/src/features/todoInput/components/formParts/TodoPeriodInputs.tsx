@@ -1,12 +1,17 @@
 import { Box } from '@mui/material'
 import { TodoPeriodFromInput, TodoPeriodToInput } from './period'
 
-function TodoPeriodInputs() {
+interface TodoPeriodInputsProps {
+  name: string
+}
+
+function TodoPeriodInputs(props: TodoPeriodInputsProps) {
+  const { name } = props
   return (
     <>
-      <TodoPeriodFromInput />
+      <TodoPeriodFromInput name={`${name}From`} />
       <Box sx={{ textAlign: 'center' }}>～</Box>
-      <TodoPeriodToInput />
+      <TodoPeriodToInput name={`${name}To`} />
     </>
   )
 }

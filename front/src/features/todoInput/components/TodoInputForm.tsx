@@ -12,13 +12,13 @@ import {
 import { Box } from '@mui/material'
 import { fitContentHorizontalSx } from '@styles'
 import { FormProvider, useForm } from 'react-hook-form'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 export interface TodoInputFormInputs {
   title: string
   description: string
-  dateFrom: string
-  dateTo: string
+  dateFrom: Dayjs
+  dateTo: Dayjs
 }
 
 interface TodoInputFormProps {
@@ -27,12 +27,13 @@ interface TodoInputFormProps {
 
 function TodoInputForm(props: TodoInputFormProps) {
   const { onSubmitHandler } = props
+
   const methods = useForm<TodoInputFormInputs>({
     defaultValues: {
       title: '',
       description: '',
-      dateFrom: dayjs().format('YYYY/MM/DD'),
-      dateTo: dayjs().format('YYYY/MM/DD'),
+      dateFrom: dayjs(dayjs().format('YYYY/MM/DD')),
+      dateTo: dayjs(dayjs().format('YYYY/MM/DD')),
     },
   })
   const { handleSubmit } = methods
@@ -51,7 +52,7 @@ function TodoInputForm(props: TodoInputFormProps) {
             </Box>
             <TodoDescriptionTextField name="description" />
             <HorizontalBottomAlignmentBox gap={2} sx={fitContentHorizontalSx}>
-              <TodoPeriodInputs />
+              <TodoPeriodInputs name="date" />
             </HorizontalBottomAlignmentBox>
             <SubmitButton />
           </VerticalBox>

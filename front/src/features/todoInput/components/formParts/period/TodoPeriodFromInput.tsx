@@ -1,7 +1,12 @@
 import { StandardDatePicker } from '@components'
 
-function TodoPeriodFromInput() {
-  return <StandardDatePicker>開始日</StandardDatePicker>
+interface TodoPeriodFromtInputProps {
+  name: string
+}
+
+function TodoPeriodFromInput(props: TodoPeriodFromtInputProps) {
+  const { name } = props
+  return <StandardDatePicker name={name}>開始日</StandardDatePicker>
 }
 
 export default TodoPeriodFromInput
