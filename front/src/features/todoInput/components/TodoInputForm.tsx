@@ -2,7 +2,7 @@ import {
   LeftMarginIndentBox,
   HorizontalBottomAlignmentBox,
   VerticalBox,
-} from '@components'
+} from '@/components'
 import {
   SubmitButton,
   TodoDescriptionTextField,
@@ -10,7 +10,7 @@ import {
   TodoTitleTextField,
 } from './formParts'
 import { Box } from '@mui/material'
-import { fitContentHorizontalSx } from '@styles'
+import { fitContentHorizontalSx } from '@/styles'
 import { FormProvider, useForm } from 'react-hook-form'
 import dayjs, { Dayjs } from 'dayjs'
 

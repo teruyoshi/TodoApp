@@ -1,4 +1,4 @@
-import { MyRoutes } from '@routes'
+import { MyRoutes } from '@/routes'
 import { BrowserRouter } from 'react-router'
 import CssBaseline from '@mui/material/CssBaseline'
 import { DayjsLocalizationProvider } from './providers'

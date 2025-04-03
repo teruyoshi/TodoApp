@@ -1,8 +1,8 @@
 // React Testing Library のカスタムマッチャをインポート
 import '@testing-library/jest-dom'
 
-// モックサーバーのインポート（エイリアス '@mocks' が有効になっている前提です）
-// import { server } from '@mocks'
+// モックサーバーのインポート（エイリアス '@/' が有効になっている前提です）
+// import { server } from '@/mocks'
 
 // dayjs を用いた日付フォーマットのロケール設定
 import dayjs from 'dayjs'

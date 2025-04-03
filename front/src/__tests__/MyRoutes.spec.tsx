@@ -1,6 +1,6 @@
 import { MemoryRouter } from 'react-router'
 import { render } from '@testing-library/react'
-import { MyRoutes } from '@routes'
+import { MyRoutes } from '@/routes'
 
 function setup() {
   const Component = (

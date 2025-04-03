@@ -42,24 +42,7 @@ export default {
 
   // モジュールパスのエイリアス設定（tsconfig.json の paths と合わせる）
   moduleNameMapper: {
-    '^@routes$': '<rootDir>/src/routes',
-    '^@routes/(.*)$': '<rootDir>/src/routes/$1',
-    '^@features$': '<rootDir>/src/features',
-    '^@features/(.*)$': '<rootDir>/src/features/$1',
-    '^@components$': '<rootDir>/src/components',
-    '^@components/(.*)$': '<rootDir>/src/components/$1',
-    '^@hooks$': '<rootDir>/src/hooks',
-    '^@hooks/(.*)$': '<rootDir>/src/hooks/$1',
-    '^@store$': '<rootDir>/src/store',
-    '^@store/(.*)$': '<rootDir>/src/store/$1',
-    '^@styles$': '<rootDir>/src/styles',
-    '^@styles/(.*)$': '<rootDir>/src/styles/$1',
-    '^@types$': '<rootDir>/src/types',
-    '^@types/(.*)$': '<rootDir>/src/types/$1',
-    '^@utils$': '<rootDir>/src/utils',
-    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
-    '^@mocks$': '<rootDir>/src/mocks',
-    '^@mocks/(.*)$': '<rootDir>/src/mocks/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
 
     // CSS モジュールや画像ファイルのモック設定
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',

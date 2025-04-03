@@ -1,5 +1,5 @@
-import { LeftMarginIndentBox } from '@components'
-import { TodoInput } from '@features/todoInput'
+import { LeftMarginIndentBox } from '@/components'
+import { TodoInput } from '@/features/todoInput'
 import { Typography } from '@mui/material'
 
 function TodoApp() {

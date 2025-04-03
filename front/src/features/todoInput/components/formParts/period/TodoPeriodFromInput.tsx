@@ -1,4 +1,4 @@
-import { StandardDatePicker } from '@components'
+import { StandardDatePicker } from '@/components'
 
 interface TodoPeriodFromtInputProps {
   name: string
