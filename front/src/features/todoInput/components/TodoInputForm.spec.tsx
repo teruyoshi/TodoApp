@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
-import { TodoInputForm } from '../components'
+import { TodoInputForm } from '.'
 import userEvent from '@testing-library/user-event'
-import { DayjsLocalizationProvider } from '../../../providers'
+import { DayjsLocalizationProvider } from '@/providers'
 import dayjs from 'dayjs'
 
 const setup = (onSubmitHandlerMock?: jest.Func) => {

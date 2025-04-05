@@ -9,6 +9,9 @@ function TodoApp() {
       <LeftMarginIndentBox level={1}>
         <TodoInput />
       </LeftMarginIndentBox>
+      <LeftMarginIndentBox level={1}>
+        <Typography variant="h5">TODOリスト</Typography>
+      </LeftMarginIndentBox>
     </>
   )
 }

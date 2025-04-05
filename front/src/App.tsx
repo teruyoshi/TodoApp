@@ -1,21 +1,19 @@
 import { MyRoutes } from '@/routes'
 import { BrowserRouter } from 'react-router'
 import CssBaseline from '@mui/material/CssBaseline'
-import { DayjsLocalizationProvider } from './providers'
-import { store } from '@/store'
-import { Provider } from 'react-redux'
+import { ReduxProvider, DayjsLocalizationProvider } from './providers'
 
 function App() {
   return (
     <>
       <CssBaseline />
-      <Provider store={store}>
+      <ReduxProvider>
         <DayjsLocalizationProvider>
           <BrowserRouter>
             <MyRoutes />
           </BrowserRouter>
         </DayjsLocalizationProvider>
-      </Provider>
+      </ReduxProvider>
     </>
   )
 }

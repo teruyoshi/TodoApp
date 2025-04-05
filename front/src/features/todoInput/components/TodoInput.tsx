@@ -10,7 +10,6 @@ function TodoInput() {
       <TodoInputForm
         onSubmitHandler={(data: TodoInputFormInputs) => {
           createTodo(data)
-          console.log(data)
         }}
       />
     </>

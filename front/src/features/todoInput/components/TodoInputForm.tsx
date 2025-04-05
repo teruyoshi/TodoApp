@@ -29,6 +29,7 @@ function TodoInputForm(props: TodoInputFormProps) {
   const { onSubmitHandler } = props
 
   const methods = useForm<TodoInputFormInputs>({
+    mode: 'onChange',
     defaultValues: {
       title: '',
       description: '',

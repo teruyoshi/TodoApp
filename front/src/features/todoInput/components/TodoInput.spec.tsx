@@ -1,6 +1,6 @@
 import { cleanup, render } from '@testing-library/react'
-import { TodoInput } from '..'
-import { DayjsLocalizationProvider } from '../../../providers'
+import { TodoInput } from '.'
+import { DayjsLocalizationProvider } from '@/providers'
 
 const spyOnProps = jest.fn()
 const createTodoMock = jest.fn()
