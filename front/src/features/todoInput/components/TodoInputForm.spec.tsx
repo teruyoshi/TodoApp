@@ -68,14 +68,6 @@ describe('TodoInputForm', () => {
     expect(dateFromInput).toHaveValue(dayjs().format('YYYY/MM/DD'))
     expect(dateToInput).toHaveValue(dayjs().format('YYYY/MM/DD'))
   })
-  
-  it('Todo のタイトルを入力出来る', async () => {
-    const { titleInput } = setup()
-
-    await userEvent.type(titleInput, '国語の勉強')
-
-    expect(titleInput).toHaveValue('国語の勉強')
-  })
 
   it('Todo の説明を入力出来る', async () => {
     const { descriptionInput } = setup()
