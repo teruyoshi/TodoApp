@@ -55,21 +55,20 @@ describe('TodoInputForm', () => {
     })
   })
 
-  it('入力せず送信ボタンを押すと、フォームの送信関数が初期値で呼ばれる', async () => {
-    const onSubmitHandlerMock = jest.fn()
+  it('各フォームパーツの初期値が意図通りに設定されている', async () => {
+    const {
+      titleInput,
+      descriptionInput,
+      dateFromInput,
+      dateToInput,
+    } = setup()
 
-    const { submitButton } = setup(onSubmitHandlerMock)
-
-    await userEvent.click(submitButton)
-
-    expect(onSubmitHandlerMock).toHaveBeenCalledWith({
-      title: '',
-      description: '',
-      dateFrom: dayjs(dayjs().format('YYYY/MM/DD')),
-      dateTo: dayjs(dayjs().format('YYYY/MM/DD')),
-    })
+    expect(titleInput).toHaveValue('')
+    expect(descriptionInput).toHaveValue('')
+    expect(dateFromInput).toHaveValue(dayjs().format('YYYY/MM/DD'))
+    expect(dateToInput).toHaveValue(dayjs().format('YYYY/MM/DD'))
   })
-
+  
   it('Todo のタイトルを入力出来る', async () => {
     const { titleInput } = setup()
 

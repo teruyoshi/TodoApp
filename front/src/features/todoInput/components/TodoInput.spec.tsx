@@ -19,9 +19,7 @@ jest.mock('../components/TodoInputForm', () => ({
 
 const setup = () => {
   const screen = render(
-    <DayjsLocalizationProvider>
-      <TodoInput />
-    </DayjsLocalizationProvider>
+    <TodoInput />
   )
 
   return {
