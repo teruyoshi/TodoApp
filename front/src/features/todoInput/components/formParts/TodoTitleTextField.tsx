@@ -13,8 +13,11 @@ function TodoTitleTextField(props: TodoTitleTextFieldProps) {
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
-        <TextField label="タイトル" variant="standard" {...field} />
+      rules={{
+        validate: (value) => ((value.length <= 20) || 'タイトルは20文字以内で入力してください')
+      }}
+      render={({ field, fieldState: { error } }) => (
+        <TextField label="タイトル" variant="standard" error={!!error} {...field} />
       )}
     />
   )

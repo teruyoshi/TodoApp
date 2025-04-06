@@ -13,6 +13,7 @@ import { Box } from '@mui/material'
 import { fitContentHorizontalSx } from '@/styles'
 import { FormProvider, useForm } from 'react-hook-form'
 import dayjs, { Dayjs } from 'dayjs'
+import { useEffect } from 'react'
 
 export interface TodoInputFormInputs {
   title: string
@@ -37,7 +38,13 @@ function TodoInputForm(props: TodoInputFormProps) {
       dateTo: dayjs(dayjs().format('YYYY/MM/DD')),
     },
   })
-  const { handleSubmit } = methods
+  const { handleSubmit, formState, reset } = methods
+
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset()
+    }
+  }, [formState])
 
   return (
     <FormProvider {...methods}>
