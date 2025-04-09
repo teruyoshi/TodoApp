@@ -1,15 +1,14 @@
 import { cleanup, render } from '@testing-library/react'
-import { TodoInput } from '.'
-import { DayjsLocalizationProvider } from '@/providers'
+import { TodoInput } from '../../components'
 
 const spyOnProps = jest.fn()
 const createTodoMock = jest.fn()
 
-jest.mock('../api/todoInputApi', () => ({
+jest.mock('../../api/todoInputApi', () => ({
   useCreateTodoMutation: () => [createTodoMock],
 }))
 
-jest.mock('../components/TodoInputForm', () => ({
+jest.mock('../../components/TodoInputForm', () => ({
   __esModule: true,
   default: (props: any) => {
     spyOnProps(props)
@@ -39,7 +38,8 @@ describe('TodoInputs', () => {
 
     expect(title).toBeInTheDocument()
   })
-  it('TodoInputApi.useCreateTodoMutation の返り値が Form に handler として渡されている', () => {
+
+  it('API の送信処理が TodoInputApi.useCreateTodoMutation から取得され Form に handler として渡されている', () => {
     setup()
     const { onSubmitHandler } = spyOnProps.mock.calls[0][0]
     onSubmitHandler()

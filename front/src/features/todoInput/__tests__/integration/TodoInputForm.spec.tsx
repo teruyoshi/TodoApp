@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import { TodoInputForm } from '.'
+import { TodoInputForm } from '../../components'
 import userEvent from '@testing-library/user-event'
 import { DayjsLocalizationProvider } from '@/providers'
 import dayjs from 'dayjs'
