@@ -14,7 +14,8 @@ function TodoTitleTextField(props: TodoTitleTextFieldProps) {
       control={control}
       name={name}
       rules={{
-        validate: (value) => ((value.length <= 20) || 'タイトルは20文字以内で入力してください')
+        required: 'タイトルを入力してください',
+        maxLength: { value: 20, message: 'タイトルは20文字以内で入力してください' }
       }}
       render={({ field, fieldState: { error } }) => (
         <TextField label="タイトル" variant="standard" error={!!error} {...field} />

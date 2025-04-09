@@ -39,6 +39,22 @@ describe('TodoTitleTextField', () => {
     expect(onSubmitHandlerMock).toHaveBeenCalled()
   })
 
+  it('Todo のタイトルが空だとエラーする', async () => {
+    const onSubmitHandlerMock = jest.fn()
+    const spyOnError = jest.fn()
+
+    const { titleInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
+
+    await userEvent.type(titleInput, '国語の勉強')
+    await userEvent.clear(titleInput)
+    await userEvent.click(submitButton)
+
+    const errors = spyOnError.mock.calls[0][0]
+
+    expect(errors).not.toStrictEqual({})
+    expect(errors.test.message).toBe('タイトルを入力してください')
+  })
+
   it('Todo のタイトルに21文字以上入れるとエラーする', async () => {
     const onSubmitHandlerMock = jest.fn()
     const spyOnError = jest.fn()
