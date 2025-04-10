@@ -15,58 +15,95 @@ const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
   const submitButton = getByRole('button', { name: '送信' })
 
   return {
+    screen,
     titleInput,
-    submitButton
+    submitButton,
   }
 }
 
 describe('TodoTitleTextField', () => {
-  it('Todo のタイトルを入力出来る', async () => {
-    const { titleInput } = setup()
+  describe('正常系テスト', () => {
+    it('Todo のタイトルを入力出来る', async () => {
+      const { titleInput } = setup()
 
-    await userEvent.type(titleInput, '国語の勉強')
+      await userEvent.type(titleInput, '国語の勉強')
 
-    expect(titleInput).toHaveValue('国語の勉強')
+      expect(titleInput).toHaveValue('国語の勉強')
+    })
+
+    it('Todo のタイトルを入力し、送信出来る', async () => {
+      const onSubmitHandlerMock = jest.fn()
+      const { titleInput, submitButton } = setup(onSubmitHandlerMock)
+
+      await userEvent.type(titleInput, '国語の勉強')
+      await userEvent.click(submitButton)
+
+      expect(onSubmitHandlerMock).toHaveBeenCalled()
+    })
   })
 
-  it('Todo のタイトルを入力し、送信出来る', async () => {
-    const onSubmitHandlerMock = jest.fn()
-    const { titleInput, submitButton } = setup(onSubmitHandlerMock)
+  describe('Todo のタイトルが空の時', () => {
+    const emptyOperationSetup = async () => {
+      const onSubmitHandlerMock = jest.fn()
+      const spyOnError = jest.fn()
 
-    await userEvent.type(titleInput, '国語の勉強')
-    await userEvent.click(submitButton)
+      const { screen, titleInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
 
-    expect(onSubmitHandlerMock).toHaveBeenCalled()
+      await userEvent.type(titleInput, 'a')
+      await userEvent.clear(titleInput)
+      await userEvent.click(submitButton)
+
+      return { onSubmitHandlerMock, spyOnError, ...screen }
+    }
+
+    it('フォームにエラーが発生する', async () => {
+      const { spyOnError } = await emptyOperationSetup()
+      const errors = spyOnError.mock.calls[0][0]
+
+      expect(errors).not.toStrictEqual({})
+      expect(errors.test.message).toBe('タイトルを入力してください')
+    })
+
+    it('エラーメッセージが表示される', async () => {
+      const { getByText } = await emptyOperationSetup()
+      expect(getByText('タイトルを入力してください')).toBeInTheDocument()
+    })
+
+    it('フォームが送信出来ない', async () => {
+      const { onSubmitHandlerMock } = await emptyOperationSetup()
+      expect(onSubmitHandlerMock).not.toHaveBeenCalled()
+    })
   })
 
-  it('Todo のタイトルが空だとエラーする', async () => {
-    const onSubmitHandlerMock = jest.fn()
-    const spyOnError = jest.fn()
+  describe('Todo のタイトルに21文字以上入れた時', () => {
+    const overTextOperationSetup = async () => {
+      const onSubmitHandlerMock = jest.fn()
+      const spyOnError = jest.fn()
 
-    const { titleInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
+      const { screen, titleInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
 
-    await userEvent.type(titleInput, '国語の勉強')
-    await userEvent.clear(titleInput)
-    await userEvent.click(submitButton)
+      await userEvent.type(titleInput, 'abcdefghijklmnopqrstuvwxyz')
+      await userEvent.click(submitButton)
 
-    const errors = spyOnError.mock.calls[0][0]
+      return { onSubmitHandlerMock, spyOnError, ...screen }
+    }
 
-    expect(errors).not.toStrictEqual({})
-    expect(errors.test.message).toBe('タイトルを入力してください')
-  })
+    it('フォームにエラーが発生する', async () => {
+      const { spyOnError } = await overTextOperationSetup()
+      const errors = spyOnError.mock.calls[0][0]
 
-  it('Todo のタイトルに21文字以上入れるとエラーする', async () => {
-    const onSubmitHandlerMock = jest.fn()
-    const spyOnError = jest.fn()
+      expect(errors).not.toStrictEqual({})
+      expect(errors.test.message).toBe('タイトルは20文字以内で入力してください')
+    })
 
-    const { titleInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
+    it('エラーメッセージが表示される', async () => {
+      const { getByText } = await overTextOperationSetup()
+      expect(getByText('タイトルは20文字以内で入力してください')).toBeInTheDocument()
+    })
 
-    await userEvent.type(titleInput, 'abcdefghijklmnopqrstuvwxyz')
-    await userEvent.click(submitButton)
-
-    const errors = spyOnError.mock.calls[0][0]
-
-    expect(errors).not.toStrictEqual({})
-    expect(errors.test.message).toBe('タイトルは20文字以内で入力してください')
+    it('フォームが送信出来ない', async () => {
+      const { onSubmitHandlerMock } = await overTextOperationSetup()
+      expect(onSubmitHandlerMock).not.toHaveBeenCalled()
+    })
   })
 })
