@@ -14,13 +14,15 @@ function TodoDescriptionTextField(props: TodoDescriptionTextFieldProps) {
       control={control}
       name={name}
       rules={{ required: '説明を入力してください' }}
-      render={({ field }) => (
+      render={({ field, fieldState: { error } }) => (
         <TextField
           sx={{ width: '100%' }}
           label="説明"
           variant="filled"
           rows={3}
           multiline
+          error={!!error}
+          helperText={error?.message}
           {...field}
         />
       )}
