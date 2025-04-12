@@ -13,6 +13,7 @@ function TodoDescriptionTextField(props: TodoDescriptionTextFieldProps) {
     <Controller
       control={control}
       name={name}
+      rules={{ required: '説明を入力してください' }}
       render={({ field }) => (
         <TextField
           sx={{ width: '100%' }}
