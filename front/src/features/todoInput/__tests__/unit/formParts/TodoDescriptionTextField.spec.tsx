@@ -75,14 +75,21 @@ describe('TodoDescriptionTextField', () => {
     })
   })
 
-  describe('Todo の説明に21文字以上入れた時', () => {
+  describe('Todo の説明に201文字以上入れた時', () => {
     const overTextOperationSetup = async () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
       const { screen, descriptionInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
 
-      await userEvent.type(descriptionInput, 'abcdefghijklmnopqrstuvwxyz')
+      let textLength201 = ''
+      for (let i = 0; i < 201; i++) {
+        textLength201 += 'a'
+      }
+
+      expect(textLength201).toHaveLength(201)
+
+      await userEvent.type(descriptionInput, textLength201)
       await userEvent.click(submitButton)
 
       return { onSubmitHandlerMock, spyOnError, ...screen }
@@ -93,12 +100,12 @@ describe('TodoDescriptionTextField', () => {
       const errors = spyOnError.mock.calls[0][0]
 
       expect(errors).not.toStrictEqual({})
-      expect(errors.test.message).toBe('説明は20文字以内で入力してください')
+      expect(errors.test.message).toBe('説明は200文字以内で入力してください')
     })
 
     it('エラーメッセージが表示される', async () => {
       const { getByText } = await overTextOperationSetup()
-      expect(getByText('説明は20文字以内で入力してください')).toBeInTheDocument()
+      expect(getByText('説明は200文字以内で入力してください')).toBeInTheDocument()
     })
 
     it('フォームが送信出来ない', async () => {
