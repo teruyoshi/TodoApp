@@ -1,27 +1,26 @@
 import { DatePicker } from '@mui/x-date-pickers'
-import dayjs from 'dayjs'
-import { Controller, useFormContext } from 'react-hook-form'
-import { useState } from 'react'
+import { Controller, FieldValues, RegisterOptions, useFormContext } from 'react-hook-form'
 
 interface StandardDatePickerProps {
   name: string
+  rules?: Omit<RegisterOptions<FieldValues, string>, "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"> | undefined
   children: string
 }
 
 function StandardDatePicker(props: StandardDatePickerProps) {
-  const { name, children } = props
-  const { control, getValues } = useFormContext()
-  const [value, setValue] = useState(getValues(name))
+  const { name, rules, children } = props
+  const { control } = useFormContext()
 
   return (
     <Controller
       control={control}
       name={name}
-      render={({ field }) => (
+      rules={rules}
+      render={({ field, fieldState: { error } }) => (
         <DatePicker
           label={children}
           sx={{ minWidth: '10em' }}
-          slotProps={{ textField: { variant: 'standard' } }}
+          slotProps={{ textField: { variant: 'standard', error: !!error, helperText: error?.message } }}
           {...field}
         />
       )}
