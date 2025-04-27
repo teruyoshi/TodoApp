@@ -1,6 +1,5 @@
 import {
   LeftMarginIndentBox,
-  HorizontalBottomAlignmentBox,
   VerticalBox,
 } from '@/components'
 import {
@@ -59,9 +58,7 @@ function TodoInputForm(props: TodoInputFormProps) {
               <TodoTitleTextField name="title" />
             </Box>
             <TodoDescriptionTextField name="description" />
-            <HorizontalBottomAlignmentBox gap={2} sx={fitContentHorizontalSx}>
-              <TodoPeriodInputs name="date" />
-            </HorizontalBottomAlignmentBox>
+            <TodoPeriodInputs name="date" />
             <SubmitButton />
           </VerticalBox>
         </LeftMarginIndentBox>
