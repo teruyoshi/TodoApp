@@ -1,9 +1,20 @@
 import { DatePicker } from '@mui/x-date-pickers'
-import { Controller, FieldValues, RegisterOptions, useFormContext } from 'react-hook-form'
+import {
+  Controller,
+  FieldValues,
+  RegisterOptions,
+  useFormContext,
+} from 'react-hook-form'
+import { memo } from 'react'
 
 interface StandardDatePickerProps {
   name: string
-  rules?: Omit<RegisterOptions<FieldValues, string>, "valueAsNumber" | "valueAsDate" | "setValueAs" | "disabled"> | undefined
+  rules?:
+    | Omit<
+        RegisterOptions<FieldValues, string>,
+        'valueAsNumber' | 'valueAsDate' | 'setValueAs' | 'disabled'
+      >
+    | undefined
   children: string
 }
 
@@ -20,7 +31,13 @@ function StandardDatePicker(props: StandardDatePickerProps) {
         <DatePicker
           label={children}
           sx={{ minWidth: '10em' }}
-          slotProps={{ textField: { variant: 'standard', error: !!error, helperText: error?.message } }}
+          slotProps={{
+            textField: {
+              variant: 'standard',
+              error: !!error,
+              helperText: error?.message,
+            },
+          }}
           {...field}
         />
       )}
@@ -28,4 +45,4 @@ function StandardDatePicker(props: StandardDatePickerProps) {
   )
 }
 
-export default StandardDatePicker
+export default memo(StandardDatePicker)
