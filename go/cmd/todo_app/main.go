@@ -6,6 +6,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
+
+	routerPkg "example.com/templateReactGo/internal/router"
 )
 
 func main() {
@@ -26,10 +28,7 @@ func main() {
 			w.WriteHeader(http.StatusOK)
 			w.Write([]byte("Hello World\n"))
 		})
-		r.Post("/todos/", func(w http.ResponseWriter, r *http.Request) {
-			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("Hello World\n"))
-		})
+		routerPkg.RegisterTodoRoutes(r)
 	})
 
 	srv := &http.Server{
