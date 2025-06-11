@@ -23,12 +23,12 @@ func main() {
 
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/test", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Hello World\n"))
 			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Hello World\n"))
 		})
 		r.Post("/todos/", func(w http.ResponseWriter, r *http.Request) {
-			w.Write([]byte("Hello World\n"))
 			w.WriteHeader(http.StatusOK)
+			w.Write([]byte("Hello World\n"))
 		})
 	})
 
@@ -38,6 +38,6 @@ func main() {
 	}
 
 	if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-		fmt.Println("サーバー起動に失敗しました: %v", err)
+		fmt.Printf("サーバー起動に失敗しました: %v\n", err)
 	}
 }
