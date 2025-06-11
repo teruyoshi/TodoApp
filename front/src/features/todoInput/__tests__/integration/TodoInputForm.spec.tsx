@@ -92,4 +92,25 @@ describe('TodoInputForm', () => {
 
     expect(dateToInput).toHaveValue(dayjs('2025/02/27').format('YYYY/MM/DD'))
   })
+
+  it('送信後に入力値が初期値に戻る', async () => {
+    const {
+      titleInput,
+      descriptionInput,
+      dateFromInput,
+      dateToInput,
+      submitButton,
+    } = setup()
+
+    await userEvent.type(titleInput, '社会の勉強')
+    await userEvent.type(descriptionInput, '年号を暗記する')
+    await userEvent.type(dateFromInput, '20250101')
+    await userEvent.type(dateToInput, '20250102')
+    await userEvent.click(submitButton)
+
+    expect(titleInput).toHaveValue('')
+    expect(descriptionInput).toHaveValue('')
+    expect(dateFromInput).toHaveValue(dayjs().format('YYYY/MM/DD'))
+    expect(dateToInput).toHaveValue(dayjs().format('YYYY/MM/DD'))
+  })
 })
