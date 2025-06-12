@@ -1,7 +1,8 @@
 package mysql
 
 import (
-	"database/sql"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 
 	"github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
 	repo "github.com/teruyoshi/todoApp/internal/features/todoCreate/repository"
@@ -10,16 +11,19 @@ import (
 var _ repo.TodoRepository = (*TodoRepository)(nil)
 
 type TodoRepository struct {
-	db *sql.DB
+	db *gorm.DB
 }
 
-func NewTodoRepository(db *sql.DB) *TodoRepository {
-	return &TodoRepository{db: db}
+func NewTodoRepository(dsn string) (*TodoRepository, error) {
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+	return &TodoRepository{db: db}, nil
 }
 
 func (r *TodoRepository) Create(t entity.Todo) (entity.Todo, error) {
-	const query = `INSERT INTO todos (title, description, date_from, date_to) VALUES (?, ?, ?, ?)`
-	if _, err := r.db.Exec(query, t.TodoTitle, t.TodoDescription, t.TodoDateFrom, t.TodoDateTo); err != nil {
+	if err := r.db.Create(&t).Error; err != nil {
 		return entity.Todo{}, err
 	}
 	return t, nil
