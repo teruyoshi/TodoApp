@@ -1,0 +1,244 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>todo_app: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/teruyoshi/todoApp/cmd/todo_app/main.go (0.0%)</option>
+				
+				<option value="file1">github.com/teruyoshi/todoApp/internal/features/todoCreate/handler/http.go (0.0%)</option>
+				
+				<option value="file2">github.com/teruyoshi/todoApp/internal/features/todoCreate/repository/mysql/repository.go (0.0%)</option>
+				
+				<option value="file3">github.com/teruyoshi/todoApp/internal/features/todoCreate/usecase/create.go (0.0%)</option>
+				
+				<option value="file4">github.com/teruyoshi/todoApp/internal/router/todo.go (0.0%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package main
+
+import (
+        "fmt"
+        "net/http"
+
+        "github.com/go-chi/chi/v5"
+        "github.com/go-chi/cors"
+
+        routerPkg "github.com/teruyoshi/todoApp/internal/router"
+)
+
+func main() <span class="cov0" title="0">{
+        router := chi.NewRouter()
+
+        // CORS の設定
+        router.Use(cors.Handler(cors.Options{
+                AllowedOrigins:   []string{"http://localhost:5173"}, // 許可するオリジンを指定
+                AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+                AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+                ExposedHeaders:   []string{"Link"},
+                AllowCredentials: false,
+                MaxAge:           300, // キャッシュの有効期限
+        }))
+
+        router.Route("/api/v1", func(r chi.Router) </span><span class="cov0" title="0">{
+                r.Get("/test", func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                        w.WriteHeader(http.StatusOK)
+                        w.Write([]byte("Hello World\n"))
+                }</span>)
+
+                <span class="cov0" title="0">routerPkg.RegisterTodoRoutes(r)</span>
+        })
+
+        <span class="cov0" title="0">srv := &amp;http.Server{
+                Addr:    ":8080",
+                Handler: router,
+        }
+
+        if err := srv.ListenAndServe(); err != nil &amp;&amp; err != http.ErrServerClosed </span><span class="cov0" title="0">{
+                fmt.Printf("サーバー起動に失敗しました: %v\n", err)
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file1" style="display: none">package handler
+
+import (
+        "encoding/json"
+        "net/http"
+
+        "github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
+)
+
+type todoCreateHandler struct{}
+
+func NewTodoCreateHandler() *todoCreateHandler <span class="cov0" title="0">{
+        return &amp;todoCreateHandler{}
+}</span>
+
+func (h *todoCreateHandler) Create(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        var t entity.Todo
+        if err := json.NewDecoder(r.Body).Decode(&amp;t); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "invalid json", http.StatusBadRequest)
+                return
+        }</span>
+
+        <span class="cov0" title="0">w.Header().Set("Content-Type", "application/json")
+        if err := json.NewEncoder(w).Encode(t); err != nil </span><span class="cov0" title="0">{
+                http.Error(w, "failed to encode json", http.StatusInternalServerError)
+                return
+        }</span>
+}
+</pre>
+		
+		<pre class="file" id="file2" style="display: none">package mysql
+
+import (
+        "database/sql"
+
+        "github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
+        repo "github.com/teruyoshi/todoApp/internal/features/todoCreate/repository"
+)
+
+var _ repo.TodoRepository = (*TodoRepository)(nil)
+
+type TodoRepository struct {
+        db *sql.DB
+}
+
+func NewTodoRepository(db *sql.DB) *TodoRepository <span class="cov0" title="0">{
+        return &amp;TodoRepository{db: db}
+}</span>
+
+func (r *TodoRepository) Create(t entity.Todo) (entity.Todo, error) <span class="cov0" title="0">{
+        const query = `INSERT INTO todos (title, description, date_from, date_to) VALUES (?, ?, ?, ?)`
+        if _, err := r.db.Exec(query, t.TodoTitle, t.TodoDescription, t.TodoDateFrom, t.TodoDateTo); err != nil </span><span class="cov0" title="0">{
+                return entity.Todo{}, err
+        }</span>
+        <span class="cov0" title="0">return t, nil</span>
+}
+</pre>
+		
+		<pre class="file" id="file3" style="display: none">package usecase
+
+import "github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
+
+type TodoCreateUseCase struct{}
+
+func NewTodoCreateUsecase() *TodoCreateUseCase <span class="cov0" title="0">{
+        return &amp;TodoCreateUseCase{}
+}</span>
+
+func (u *TodoCreateUseCase) Execute(t entity.Todo) (entity.Todo, error) <span class="cov0" title="0">{
+
+        return t, nil
+}</span>
+</pre>
+		
+		<pre class="file" id="file4" style="display: none">package router
+
+import (
+        "net/http"
+
+        "github.com/go-chi/chi/v5"
+)
+
+func RegisterTodoRoutes(r chi.Router) <span class="cov0" title="0">{
+        r.Post("/todos/", func(w http.ResponseWriter, r *http.Request) </span><span class="cov0" title="0">{
+                w.WriteHeader(http.StatusOK)
+                w.Write([]byte("Hello World\n"))
+        }</span>)
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>
