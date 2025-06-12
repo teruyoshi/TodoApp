@@ -14,6 +14,11 @@ type TodoRepository struct {
 	db *gorm.DB
 }
 
+// AutoMigrate runs the schema migration for the provided models.
+func (r *TodoRepository) AutoMigrate(dst ...interface{}) error {
+	return r.db.AutoMigrate(dst...)
+}
+
 func NewTodoRepository(dsn string) (*TodoRepository, error) {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -23,8 +28,19 @@ func NewTodoRepository(dsn string) (*TodoRepository, error) {
 }
 
 func (r *TodoRepository) Create(t entity.Todo) (entity.Todo, error) {
-	if err := r.db.Create(&t).Error; err != nil {
+	dbModel := TTodo{
+		TodoTitle:       t.TodoTitle,
+		TodoDescription: t.TodoDescription,
+		TodoDateFrom:    t.TodoDateFrom,
+		TodoDateTo:      t.TodoDateTo,
+	}
+	if err := r.db.Create(&dbModel).Error; err != nil {
 		return entity.Todo{}, err
 	}
-	return t, nil
+	return entity.Todo{
+		TodoTitle:       dbModel.TodoTitle,
+		TodoDescription: dbModel.TodoDescription,
+		TodoDateFrom:    dbModel.TodoDateFrom,
+		TodoDateTo:      dbModel.TodoDateTo,
+	}, nil
 }
