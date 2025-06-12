@@ -5,12 +5,15 @@ import (
 	"net/http"
 
 	"github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
+	"github.com/teruyoshi/todoApp/internal/features/todoCreate/usecase"
 )
 
-type todoCreateHandler struct{}
+type todoCreateHandler struct {
+	uc *usecase.TodoCreateUseCase
+}
 
-func NewTodoCreateHandler() *todoCreateHandler {
-	return &todoCreateHandler{}
+func NewTodoCreateHandler(uc *usecase.TodoCreateUseCase) *todoCreateHandler {
+	return &todoCreateHandler{uc: uc}
 }
 
 func (h *todoCreateHandler) Create(w http.ResponseWriter, r *http.Request) {
@@ -20,8 +23,14 @@ func (h *todoCreateHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	todo, err := h.uc.Execute(t)
+	if err != nil {
+		http.Error(w, "failed to create todo", http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(t); err != nil {
+	if err := json.NewEncoder(w).Encode(todo); err != nil {
 		http.Error(w, "failed to encode json", http.StatusInternalServerError)
 		return
 	}
