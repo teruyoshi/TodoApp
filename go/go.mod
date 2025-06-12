@@ -1,4 +1,4 @@
-module example.com/templateReactGo
+module github.com/teruyoshi/todoApp
 
 go 1.24.0
 
