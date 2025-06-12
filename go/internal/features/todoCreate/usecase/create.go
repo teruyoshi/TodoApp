@@ -4,7 +4,7 @@ import "github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
 
 type TodoCreateUseCase struct{}
 
-func NewTodoCreateUsecase() *TodoCreateUseCase {
+func NewTodoCreateUseCase() *TodoCreateUseCase {
 	return &TodoCreateUseCase{}
 }
 
