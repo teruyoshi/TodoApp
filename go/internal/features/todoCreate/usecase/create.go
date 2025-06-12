@@ -1,14 +1,18 @@
 package usecase
 
-import "github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
+import (
+	"github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
+	repo "github.com/teruyoshi/todoApp/internal/features/todoCreate/repository"
+)
 
-type TodoCreateUseCase struct{}
+type TodoCreateUseCase struct {
+	repo repo.TodoRepository
+}
 
-func NewTodoCreateUseCase() *TodoCreateUseCase {
-	return &TodoCreateUseCase{}
+func NewTodoCreateUseCase(r repo.TodoRepository) *TodoCreateUseCase {
+	return &TodoCreateUseCase{repo: r}
 }
 
 func (u *TodoCreateUseCase) Execute(t entity.Todo) (entity.Todo, error) {
-
-	return t, nil
+	return u.repo.Create(t)
 }
