@@ -21,6 +21,9 @@ func RegisterTodoRoutes(r chi.Router) {
 	if err != nil {
 		panic(err)
 	}
+	if err := repo.AutoMigrate(&todoCreateRepoMysql.TTodo{}); err != nil {
+		panic(err)
+	}
 	uc := todoCreateUseCase.NewTodoCreateUseCase(repo)
 	handler := todoCreateHandler.NewTodoCreateHandler(uc)
 
