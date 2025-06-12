@@ -4,11 +4,12 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
+
+	todoCreateHandler "github.com/teruyoshi/todoApp/internal/features/todoCreate/handler"
 )
 
 func RegisterTodoRoutes(r chi.Router) {
-	r.Post("/todos/", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Hello World\n"))
-	})
+	handler := todoCreateHandler.NewTodoCreateHandler()
+
+	r.Post("/todos/", handler.Create)
 }
