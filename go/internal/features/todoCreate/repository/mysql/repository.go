@@ -14,7 +14,6 @@ type TodoRepository struct {
 	db *gorm.DB
 }
 
-// AutoMigrate runs the schema migration for the provided models.
 func (r *TodoRepository) AutoMigrate(dst ...interface{}) error {
 	return r.db.AutoMigrate(dst...)
 }

@@ -13,9 +13,9 @@ import (
 
 func RegisterTodoRoutes(r chi.Router) {
 	dsn := fmt.Sprintf("%s:%s@tcp(db:3306)/%s?parseTime=true",
-		os.Getenv("MYSQL_USER"),
-		os.Getenv("MYSQL_PASSWORD"),
-		os.Getenv("MYSQL_DATABASE"),
+		os.Getenv("DATABASE_USER"),
+		os.Getenv("DATABASE_PASSWORD"),
+		os.Getenv("DATABASE_DBNAME"),
 	)
 	repo, err := todoCreateRepoMysql.NewTodoRepository(dsn)
 	if err != nil {

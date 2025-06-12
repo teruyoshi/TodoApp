@@ -1,6 +1,5 @@
 package mysql
 
-// TTodo represents the DB model for todo table.
 type TTodo struct {
 	TodoTitle       string `gorm:"column:title"`
 	TodoDescription string `gorm:"column:description"`
@@ -9,5 +8,5 @@ type TTodo struct {
 }
 
 func (TTodo) TableName() string {
-	return "todos"
+	return "t_todos"
 }
