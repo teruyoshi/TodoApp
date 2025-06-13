@@ -4,8 +4,8 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
-	repo "github.com/teruyoshi/todoApp/internal/features/todoCreate/repository"
+	"github.com/teruyoshi/todoApp/internal/features/todos/entity"
+	repo "github.com/teruyoshi/todoApp/internal/features/todos/repository"
 )
 
 var _ repo.TodoRepository = (*TodoRepository)(nil)

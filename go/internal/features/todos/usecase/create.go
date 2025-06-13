@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
-	repo "github.com/teruyoshi/todoApp/internal/features/todoCreate/repository"
+	"github.com/teruyoshi/todoApp/internal/features/todos/entity"
+	repo "github.com/teruyoshi/todoApp/internal/features/todos/repository"
 )
 
 type TodoCreateUseCase struct {
