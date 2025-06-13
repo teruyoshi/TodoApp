@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	todoCreateHandler "github.com/teruyoshi/todoApp/internal/features/todoCreate/handler"
-	todoCreateRepoMysql "github.com/teruyoshi/todoApp/internal/features/todoCreate/repository/mysql"
-	todoCreateUseCase "github.com/teruyoshi/todoApp/internal/features/todoCreate/usecase"
+	todoCreateHandler "github.com/teruyoshi/todoApp/internal/features/todos/handler"
+	todoCreateRepoMysql "github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql"
+	todoCreateUseCase "github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
 func RegisterTodoRoutes(r chi.Router) {

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/teruyoshi/todoApp/internal/features/todoCreate/entity"
-	"github.com/teruyoshi/todoApp/internal/features/todoCreate/usecase"
+	"github.com/teruyoshi/todoApp/internal/features/todos/entity"
+	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
 type todoCreateHandler struct {
