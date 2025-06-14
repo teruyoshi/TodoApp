@@ -8,11 +8,15 @@ import (
 	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
+// todoCreateHandler handles HTTP requests for creating todos.
+// It depends on the TodoCreator interface which makes it easy to
+// replace the actual use case with a stub in tests.
 type todoCreateHandler struct {
-	uc *usecase.TodoCreateUseCase
+	uc usecase.TodoCreator
 }
 
-func NewTodoCreateHandler(uc *usecase.TodoCreateUseCase) *todoCreateHandler {
+// NewTodoCreateHandler constructs a handler with the given use case.
+func NewTodoCreateHandler(uc usecase.TodoCreator) *todoCreateHandler {
 	return &todoCreateHandler{uc: uc}
 }
 
