@@ -9,7 +9,7 @@ import (
 func TestRegisterTodoRoutes_PanicsOnInvalidDSN(t *testing.T) {
 	t.Setenv("DATABASE_USER", "invalid")
 	t.Setenv("DATABASE_PASSWORD", "invalid")
-	t.Setenv("DATABASE_DBNAME", string(rune(0))) // cause invalid DSN
+	t.Setenv("DATABASE_DBNAME", "invalid")
 	r := chi.NewRouter()
 	defer func() {
 		if recover() == nil {
