@@ -10,16 +10,15 @@ import (
 	"testing"
 
 	"github.com/teruyoshi/todoApp/internal/features/todos/entity"
-	"github.com/teruyoshi/todoApp/internal/features/todos/repository"
 	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
-type stubRepo struct {
-	createFunc func(t entity.Todo) (entity.Todo, error)
+type stubUseCase struct {
+	execFunc func(t entity.Todo) (entity.Todo, error)
 }
 
-func (s stubRepo) Create(t entity.Todo) (entity.Todo, error) {
-	return s.createFunc(t)
+func (s stubUseCase) Execute(t entity.Todo) (entity.Todo, error) {
+	return s.execFunc(t)
 }
 
 // failingResponseWriter is used to simulate write failures
@@ -46,14 +45,13 @@ func (w *failingResponseWriter) WriteHeader(code int) {
 	w.statusCode = code
 }
 
-func newHandler(repo repository.TodoRepository) *todoCreateHandler {
-	uc := usecase.NewTodoCreateUseCase(repo)
+func newHandler(uc usecase.TodoCreator) *todoCreateHandler {
 	return NewTodoCreateHandler(uc)
 }
 
 func TestCreate_Success(t *testing.T) {
 	todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
-	h := newHandler(stubRepo{createFunc: func(t entity.Todo) (entity.Todo, error) {
+	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
 		if t != todo {
 			t.Errorf("unexpected input: %v", t)
 		}
@@ -85,7 +83,7 @@ func TestCreate_Success(t *testing.T) {
 }
 
 func TestCreate_InvalidJSON(t *testing.T) {
-	h := newHandler(stubRepo{createFunc: func(t entity.Todo) (entity.Todo, error) {
+	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
 		return entity.Todo{}, nil
 	}})
 
@@ -104,7 +102,7 @@ func TestCreate_InvalidJSON(t *testing.T) {
 }
 
 func TestCreate_UseCaseError(t *testing.T) {
-	h := newHandler(stubRepo{createFunc: func(t entity.Todo) (entity.Todo, error) {
+	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
 		return entity.Todo{}, errors.New("db error")
 	}})
 
@@ -126,7 +124,7 @@ func TestCreate_UseCaseError(t *testing.T) {
 
 func TestCreate_EncodingError(t *testing.T) {
 	todo := entity.Todo{TodoTitle: "title"}
-	h := newHandler(stubRepo{createFunc: func(t entity.Todo) (entity.Todo, error) {
+	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
 		return todo, nil
 	}})
 
