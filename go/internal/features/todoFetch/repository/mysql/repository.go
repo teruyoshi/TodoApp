@@ -18,12 +18,3 @@ func NewTodoRepository(dsn string) (*TodoRepository, error) {
 	}
 	return &TodoRepository{db: db}, nil
 }
-
-// Fetch retrieves all todos from t_todos and returns them as a slice of TTodo.
-func (r *TodoRepository) Fetch() ([]TTodo, error) {
-	var todos []TTodo
-	if err := r.db.Model(&TTodo{}).Find(&todos).Error; err != nil {
-		return nil, err
-	}
-	return todos, nil
-}
