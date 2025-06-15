@@ -51,9 +51,9 @@ func newHandler(uc usecase.TodoCreator) *todoCreateHandler {
 
 func TestCreate_Success(t *testing.T) {
 	todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
-	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
-		if t != todo {
-			t.Errorf("unexpected input: %v", t)
+	h := newHandler(stubUseCase{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
+		if todoValue != todo {
+			t.Errorf("unexpected input: %v", todoValue)
 		}
 		return todo, nil
 	}})
