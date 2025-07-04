@@ -14,6 +14,10 @@ type TodoRepository struct {
 	db *gorm.DB
 }
 
+func New(db *gorm.DB) *TodoRepository {
+	return &TodoRepository{db: db}
+}
+
 func (r *TodoRepository) AutoMigrate(dst ...interface{}) error {
 	return r.db.AutoMigrate(dst...)
 }
@@ -23,7 +27,7 @@ func NewTodoRepository(dsn string) (*TodoRepository, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &TodoRepository{db: db}, nil
+	return New(db), nil
 }
 
 func (r *TodoRepository) Create(t entity.Todo) (entity.Todo, error) {
