@@ -45,7 +45,7 @@ func (w *failingResponseWriter) WriteHeader(code int) {
 	w.statusCode = code
 }
 
-func newHandler(uc usecase.TodoCreator) *todoCreateHandler {
+func newHandler(uc usecase.TodoCreator) *TodoCreateHandler {
 	return NewTodoCreateHandler(uc)
 }
 

@@ -11,16 +11,16 @@ import (
 // todoCreateHandler handles HTTP requests for creating todos.
 // It depends on the TodoCreator interface which makes it easy to
 // replace the actual use case with a stub in tests.
-type todoCreateHandler struct {
+type TodoCreateHandler struct {
 	uc usecase.TodoCreator
 }
 
 // NewTodoCreateHandler constructs a handler with the given use case.
-func NewTodoCreateHandler(uc usecase.TodoCreator) *todoCreateHandler {
-	return &todoCreateHandler{uc: uc}
+func NewTodoCreateHandler(uc usecase.TodoCreator) *TodoCreateHandler {
+	return &TodoCreateHandler{uc: uc}
 }
 
-func (h *todoCreateHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (h *TodoCreateHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var t entity.Todo
 	if err := json.NewDecoder(r.Body).Decode(&t); err != nil {
 		http.Error(w, "invalid json", http.StatusBadRequest)

@@ -1,4 +1,3 @@
-
 package mysql_test
 
 import (
@@ -24,7 +23,7 @@ func TestTodoRepository_Create(t *testing.T) {
 	}), &gorm.Config{})
 	assert.NoError(t, err)
 
-	repo := mysqlRepo.New(gormDB)
+	repo := mysqlRepo.NewTodoRepository(gormDB)
 
 	t.Run("should create a todo successfully", func(t *testing.T) {
 		todo := entity.Todo{
@@ -59,7 +58,7 @@ func TestTodoRepository_Fetch(t *testing.T) {
 	}), &gorm.Config{})
 	assert.NoError(t, err)
 
-	repo := mysqlRepo.New(gormDB)
+	repo := mysqlRepo.NewTodoRepository(gormDB)
 
 	t.Run("should fetch todos successfully", func(t *testing.T) {
 		rows := sqlmock.NewRows([]string{"id", "title", "description", "date_from", "date_to"}).

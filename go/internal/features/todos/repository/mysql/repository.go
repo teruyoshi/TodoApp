@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
 	"github.com/teruyoshi/todoApp/internal/features/todos/entity"
@@ -14,20 +13,12 @@ type TodoRepository struct {
 	db *gorm.DB
 }
 
-func New(db *gorm.DB) *TodoRepository {
+func NewTodoRepository(db *gorm.DB) *TodoRepository {
 	return &TodoRepository{db: db}
 }
 
 func (r *TodoRepository) AutoMigrate(dst ...interface{}) error {
 	return r.db.AutoMigrate(dst...)
-}
-
-func NewTodoRepository(dsn string) (*TodoRepository, error) {
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		return nil, err
-	}
-	return New(db), nil
 }
 
 func (r *TodoRepository) Create(t entity.Todo) (entity.Todo, error) {
