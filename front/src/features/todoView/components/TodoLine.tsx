@@ -1,4 +1,4 @@
-import { ListItem } from '@mui/material'
+import { ListItem, ListItemText } from '@mui/material'
 import { Todo } from '.'
 import { TodoTitle } from './parts'
 
@@ -10,6 +10,7 @@ function TodoLine({ todo }: TodoLineProps) {
   return (
     <ListItem>
       <TodoTitle>{todo.title}</TodoTitle>
+      <ListItemText>{todo.description}</ListItemText>
     </ListItem>
   )
 }
