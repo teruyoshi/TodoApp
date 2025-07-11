@@ -21,6 +21,8 @@ describe('TodoList', () => {
       const { getByText } = setup()
 
       expect(getByText('国語の勉強')).toBeInTheDocument()
+      expect(getByText('数学の勉強')).toBeInTheDocument()
+      expect(getByText('英語の勉強')).toBeInTheDocument()
     })
   })
 })

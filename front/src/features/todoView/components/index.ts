@@ -1,2 +1,5 @@
 export { default as TodoList } from './TodoList'
 export { default as TodoListTitle } from './TodoListTitle'
+export { default as TodoLine } from './TodoLine'
+export { default as Todos } from './Todos'
+export type { Todo } from './TodoList'
