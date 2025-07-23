@@ -8,12 +8,17 @@ import (
 	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
-type TodoHandler struct {
-	uc usecase.TodoCreator
+type TodoFetcher interface {
+	Execute() ([]entity.Todo, error)
 }
 
-func NewTodoHandler(uc usecase.TodoCreator) *TodoHandler {
-	return &TodoHandler{uc: uc}
+type TodoHandler struct {
+	creator usecase.TodoCreator
+	fetcher TodoFetcher
+}
+
+func NewTodoHandler(creator usecase.TodoCreator, fetcher TodoFetcher) *TodoHandler {
+	return &TodoHandler{creator: creator, fetcher: fetcher}
 }
 
 func (h *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
@@ -23,7 +28,7 @@ func (h *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todo, err := h.uc.Execute(t)
+	todo, err := h.creator.Execute(t)
 	if err != nil {
 		http.Error(w, "failed to create todo", http.StatusInternalServerError)
 		return
@@ -37,5 +42,10 @@ func (h *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *TodoHandler) Fetch(w http.ResponseWriter, r *http.Request) {
-	return
+	w.Header().Set("Content-Type", "application/json")
+	todos, _ := h.fetcher.Execute()
+	if err := json.NewEncoder(w).Encode(todos); err != nil {
+		http.Error(w, "failed to encode json", http.StatusInternalServerError)
+		return
+	}
 }

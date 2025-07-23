@@ -52,8 +52,10 @@ func (w *failingResponseWriter) WriteHeader(code int) {
 	w.statusCode = code
 }
 
-func newHandler(creator usecase.TodoCreator, fetcher interface{}) *TodoHandler {
-	return NewTodoHandler(creator)
+func newHandler(creator usecase.TodoCreator, fetcher interface {
+	Execute() ([]entity.Todo, error)
+}) *TodoHandler {
+	return NewTodoHandler(creator, fetcher)
 }
 
 func TestCreate(t *testing.T) {
@@ -167,11 +169,14 @@ func TestFetch(t *testing.T) {
 			{TodoTitle: "数学の勉強", TodoDescription: "計算ドリル"},
 			{TodoTitle: "英語の勉強", TodoDescription: "単語帳の暗記"},
 		}
-		h := newHandler(stubCreator{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
-			return todos[0], nil
-		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
-			return todos, nil
-		}})
+		h := newHandler(
+			stubCreator{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
+				return todos[0], nil
+			}},
+			stubFetcher{execFunc: func() ([]entity.Todo, error) {
+				return todos, nil
+			}},
+		)
 
 		req := httptest.NewRequest(http.MethodGet, "/todos", nil)
 		w := httptest.NewRecorder()

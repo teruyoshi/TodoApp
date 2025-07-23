@@ -54,7 +54,7 @@ func main() {
 	}
 	creater := todoCreateUseCase.NewTodoCreateUseCase(repo)
 
-	handler := todoHandler.NewTodoHandler(creater)
+	handler := todoHandler.NewTodoHandler(creater, nil)
 
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/test", func(w http.ResponseWriter, r *http.Request) {
