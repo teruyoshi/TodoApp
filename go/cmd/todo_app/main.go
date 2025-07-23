@@ -53,7 +53,7 @@ func main() {
 		panic(err)
 	}
 	uc := todoCreateUseCase.NewTodoCreateUseCase(repo)
-	handler := todoHandler.NewTodoCreateHandler(uc)
+	handler := todoHandler.NewTodoHandler(uc)
 
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/test", func(w http.ResponseWriter, r *http.Request) {

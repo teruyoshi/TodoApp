@@ -45,8 +45,8 @@ func (w *failingResponseWriter) WriteHeader(code int) {
 	w.statusCode = code
 }
 
-func newHandler(uc usecase.TodoCreator) *TodoCreateHandler {
-	return NewTodoCreateHandler(uc)
+func newHandler(uc usecase.TodoCreator) *TodoHandler {
+	return NewTodoHandler(uc)
 }
 
 func TestCreate_Success(t *testing.T) {
