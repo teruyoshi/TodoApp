@@ -1,4 +1,3 @@
-
 package usecase_test
 
 import (
@@ -10,19 +9,6 @@ import (
 	"github.com/teruyoshi/todoApp/internal/features/todos/entity"
 	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
-
-type mockTodoRepository struct {
-	CreateFunc func(entity.Todo) (entity.Todo, error)
-}
-
-func (m *mockTodoRepository) Create(t entity.Todo) (entity.Todo, error) {
-	return m.CreateFunc(t)
-}
-
-func (m *mockTodoRepository) Fetch() ([]entity.Todo, error) {
-	// Not needed for this test
-	return nil, nil
-}
 
 func TestTodoCreateUseCase_Execute(t *testing.T) {
 	t.Run("should create a todo successfully", func(t *testing.T) {
