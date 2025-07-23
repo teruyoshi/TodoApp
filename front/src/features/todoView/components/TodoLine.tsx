@@ -9,8 +9,8 @@ interface TodoLineProps {
 function TodoLine({ todo }: TodoLineProps) {
   return (
     <ListItem>
-      <TodoTitle>{todo.title}</TodoTitle>
-      <ListItemText>{todo.description}</ListItemText>
+      <TodoTitle>{todo.todoTitle}</TodoTitle>
+      <ListItemText>{todo.todoDescription}</ListItemText>
     </ListItem>
   )
 }
