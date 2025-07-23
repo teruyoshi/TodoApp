@@ -52,8 +52,9 @@ func main() {
 	if err := repo.AutoMigrate(&todoCreateRepoMysql.TTodo{}); err != nil {
 		panic(err)
 	}
-	uc := todoCreateUseCase.NewTodoCreateUseCase(repo)
-	handler := todoHandler.NewTodoHandler(uc)
+	creater := todoCreateUseCase.NewTodoCreateUseCase(repo)
+
+	handler := todoHandler.NewTodoHandler(creater)
 
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/test", func(w http.ResponseWriter, r *http.Request) {

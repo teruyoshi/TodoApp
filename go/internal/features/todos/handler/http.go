@@ -35,3 +35,7 @@ func (h *TodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
+
+func (h *TodoHandler) Fetch(w http.ResponseWriter, r *http.Request) {
+	return
+}

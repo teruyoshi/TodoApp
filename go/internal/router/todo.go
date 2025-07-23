@@ -8,10 +8,10 @@ import (
 
 type TodoHandler interface {
 	Create(w http.ResponseWriter, r *http.Request)
-	// Fetch(w http.ResponseWriter, r *http.Request)
+	Fetch(w http.ResponseWriter, r *http.Request)
 }
 
 func RegisterTodoRoutes(r chi.Router, handler TodoHandler) {
 	r.Post("/todos/", handler.Create)
-	// r.Get("/todos/", handler.Create)
+	r.Get("/todos/", handler.Fetch)
 }
