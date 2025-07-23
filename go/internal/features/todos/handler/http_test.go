@@ -18,14 +18,14 @@ type stubCreator struct {
 }
 
 type stubFetcher struct {
-	execFunc func() (entity.Todo, error)
+	execFunc func() ([]entity.Todo, error)
 }
 
 func (s stubCreator) Execute(t entity.Todo) (entity.Todo, error) {
 	return s.execFunc(t)
 }
 
-func (s stubFetcher) Execute() (entity.Todo, error) {
+func (s stubFetcher) Execute() ([]entity.Todo, error) {
 	return s.execFunc()
 }
 
@@ -63,8 +63,8 @@ func TestCreate(t *testing.T) {
 				t.Errorf("unexpected input: %v", todoValue)
 			}
 			return todo, nil
-		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
-			return entity.Todo{}, nil
+		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
+			return []entity.Todo{{}, {}}, nil
 		}})
 
 		body, _ := json.Marshal(todo)
@@ -94,8 +94,8 @@ func TestCreate(t *testing.T) {
 	t.Run("Todo 作成の際に不正な JSON が指定されるとエラーする", func(t *testing.T) {
 		h := newHandler(stubCreator{execFunc: func(t entity.Todo) (entity.Todo, error) {
 			return entity.Todo{}, nil
-		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
-			return entity.Todo{}, nil
+		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
+			return []entity.Todo{{}, {}}, nil
 		}})
 
 		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewBufferString("invalid"))
@@ -115,8 +115,8 @@ func TestCreate(t *testing.T) {
 	t.Run("Todo 作成の際に UseCase がエラーするとエラーする", func(t *testing.T) {
 		h := newHandler(stubCreator{execFunc: func(t entity.Todo) (entity.Todo, error) {
 			return entity.Todo{}, errors.New("db error")
-		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
-			return entity.Todo{}, nil
+		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
+			return []entity.Todo{{}, {}}, nil
 		}})
 
 		todo := entity.Todo{TodoTitle: "title"}
@@ -139,8 +139,8 @@ func TestCreate(t *testing.T) {
 		todo := entity.Todo{TodoTitle: "title"}
 		h := newHandler(stubCreator{execFunc: func(t entity.Todo) (entity.Todo, error) {
 			return todo, nil
-		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
-			return entity.Todo{}, nil
+		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
+			return []entity.Todo{{}, {}}, nil
 		}})
 
 		body, _ := json.Marshal(todo)
@@ -160,7 +160,36 @@ func TestCreate(t *testing.T) {
 }
 
 // func TestFetch(t *testing.T) {
-//   t.Run("Todo の取得が成功する", func(t *testing.T) {
+// 	t.Run("Todo の取得が成功する", func(t *testing.T) {
 
-//   })
+// 		todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
+// 		h := newHandler(stubCreator{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
+// 			return todo, nil
+// 		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
+// 			return []entity.Todo{todo}, nil
+// 		}})
+
+// 		body, _ := json.Marshal(todo)
+// 		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
+// 		w := httptest.NewRecorder()
+
+// 		h.Create(w, req)
+
+// 		if w.Code != http.StatusOK {
+// 			t.Fatalf("expected status 200, got %d", w.Code)
+// 		}
+
+// 		if got := w.Header().Get("Content-Type"); got != "application/json" {
+// 			t.Fatalf("unexpected content type: %s", got)
+// 		}
+
+// 		var resp entity.Todo
+// 		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+// 			t.Fatalf("failed to decode response: %v", err)
+// 		}
+
+// 		if resp != todo {
+// 			t.Fatalf("unexpected todo: %+v", resp)
+// 		}
+// 	})
 // }
