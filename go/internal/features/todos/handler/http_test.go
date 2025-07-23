@@ -13,16 +13,22 @@ import (
 	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
-type stubUseCase struct {
+type stubCreator struct {
 	execFunc func(t entity.Todo) (entity.Todo, error)
 }
 
-func (s stubUseCase) Execute(t entity.Todo) (entity.Todo, error) {
+type stubFetcher struct {
+	execFunc func() (entity.Todo, error)
+}
+
+func (s stubCreator) Execute(t entity.Todo) (entity.Todo, error) {
 	return s.execFunc(t)
 }
 
-// failingResponseWriter is used to simulate write failures
-// to trigger JSON encoding errors.
+func (s stubFetcher) Execute() (entity.Todo, error) {
+	return s.execFunc()
+}
+
 type failingResponseWriter struct {
 	header     http.Header
 	statusCode int
@@ -45,18 +51,20 @@ func (w *failingResponseWriter) WriteHeader(code int) {
 	w.statusCode = code
 }
 
-func newHandler(uc usecase.TodoCreator) *TodoHandler {
-	return NewTodoHandler(uc)
+func newHandler(creator usecase.TodoCreator, fetcher interface{}) *TodoHandler {
+	return NewTodoHandler(creator)
 }
 
 func TestCreate(t *testing.T) {
 	t.Run("Todo の作成が成功する", func(t *testing.T) {
 		todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
-		h := newHandler(stubUseCase{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
+		h := newHandler(stubCreator{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
 			if todoValue != todo {
 				t.Errorf("unexpected input: %v", todoValue)
 			}
 			return todo, nil
+		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
+			return entity.Todo{}, nil
 		}})
 
 		body, _ := json.Marshal(todo)
@@ -84,7 +92,9 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("Todo 作成の際に不正な JSON が指定されるとエラーする", func(t *testing.T) {
-		h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
+		h := newHandler(stubCreator{execFunc: func(t entity.Todo) (entity.Todo, error) {
+			return entity.Todo{}, nil
+		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
 			return entity.Todo{}, nil
 		}})
 
@@ -103,8 +113,10 @@ func TestCreate(t *testing.T) {
 	})
 
 	t.Run("Todo 作成の際に UseCase がエラーするとエラーする", func(t *testing.T) {
-		h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
+		h := newHandler(stubCreator{execFunc: func(t entity.Todo) (entity.Todo, error) {
 			return entity.Todo{}, errors.New("db error")
+		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
+			return entity.Todo{}, nil
 		}})
 
 		todo := entity.Todo{TodoTitle: "title"}
@@ -125,8 +137,10 @@ func TestCreate(t *testing.T) {
 
 	t.Run("Todo 作成の際にエンコーディングに失敗するとエラーする", func(t *testing.T) {
 		todo := entity.Todo{TodoTitle: "title"}
-		h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
+		h := newHandler(stubCreator{execFunc: func(t entity.Todo) (entity.Todo, error) {
 			return todo, nil
+		}}, stubFetcher{execFunc: func() (entity.Todo, error) {
+			return entity.Todo{}, nil
 		}})
 
 		body, _ := json.Marshal(todo)
@@ -144,3 +158,9 @@ func TestCreate(t *testing.T) {
 		}
 	})
 }
+
+// func TestFetch(t *testing.T) {
+//   t.Run("Todo の取得が成功する", func(t *testing.T) {
+
+//   })
+// }
