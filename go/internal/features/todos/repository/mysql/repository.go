@@ -39,7 +39,6 @@ func (r *TodoRepository) Create(t entity.Todo) (entity.Todo, error) {
 	}, nil
 }
 
-// Fetch retrieves all todos from t_todos and returns them as a slice of entity.Todo.
 func (r *TodoRepository) Fetch() ([]entity.Todo, error) {
 	var dbModels []TTodo
 	if err := r.db.Model(&TTodo{}).Find(&dbModels).Error; err != nil {
@@ -49,6 +48,7 @@ func (r *TodoRepository) Fetch() ([]entity.Todo, error) {
 	todos := make([]entity.Todo, len(dbModels))
 	for i, m := range dbModels {
 		todos[i] = entity.Todo{
+			ID:              m.ID,
 			TodoTitle:       m.TodoTitle,
 			TodoDescription: m.TodoDescription,
 			TodoDateFrom:    m.TodoDateFrom,

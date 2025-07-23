@@ -8,16 +8,12 @@ import (
 	"github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 )
 
-type TodoFetcher interface {
-	Execute() ([]entity.Todo, error)
-}
-
 type TodoHandler struct {
 	creator usecase.TodoCreator
-	fetcher TodoFetcher
+	fetcher usecase.TodoFetcher
 }
 
-func NewTodoHandler(creator usecase.TodoCreator, fetcher TodoFetcher) *TodoHandler {
+func NewTodoHandler(creator usecase.TodoCreator, fetcher usecase.TodoFetcher) *TodoHandler {
 	return &TodoHandler{creator: creator, fetcher: fetcher}
 }
 
