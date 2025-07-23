@@ -1,7 +1,7 @@
 import { List } from '@mui/material'
 import { Todo, TodoLine } from '.'
 
-function Todos({ children: todos }: { children: Todo[] }) {
+function ListedTodos({ children: todos }: { children: Todo[] }) {
   return (
     <List>
       {todos.map((todo) => (
@@ -11,4 +11,4 @@ function Todos({ children: todos }: { children: Todo[] }) {
   )
 }
 
-export default Todos
+export default ListedTodos
