@@ -12,7 +12,7 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	todoCreateHandler "github.com/teruyoshi/todoApp/internal/features/todos/handler"
+	todoHandler "github.com/teruyoshi/todoApp/internal/features/todos/handler"
 	todoCreateRepoMysql "github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql"
 	todoCreateUseCase "github.com/teruyoshi/todoApp/internal/features/todos/usecase"
 	routerPkg "github.com/teruyoshi/todoApp/internal/router"
@@ -53,7 +53,7 @@ func main() {
 		panic(err)
 	}
 	uc := todoCreateUseCase.NewTodoCreateUseCase(repo)
-	handler := todoCreateHandler.NewTodoCreateHandler(uc)
+	handler := todoHandler.NewTodoCreateHandler(uc)
 
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/test", func(w http.ResponseWriter, r *http.Request) {
