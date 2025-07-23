@@ -3,10 +3,12 @@ FROM ubuntu:24.04 as dev
 ENV NODE_ENV=development
 
 RUN apt-get update \
-    && apt-get -qq install -y --no-install-recommends \
-    tini \
-    && rm -rf /var/lib/apt/lists/*
+  && apt-get -qq install -y --no-install-recommends \
+  tini \
+  && rm -rf /var/lib/apt/lists/*
 EXPOSE 5173
+EXPOSE 6006
+EXPOSE 9323
 
 COPY --from=node /usr/local/include/ /usr/local/include/
 COPY --from=node /usr/local/lib/ /usr/local/lib/

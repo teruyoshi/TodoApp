@@ -10,10 +10,18 @@ const setup = () => {
   }
 }
 
-const expects = {
-  titles: ['国語の勉強', '数学の勉強', '英語の勉強'],
-  descriptions: ['音読と漢字の宿題', '計算ドリル', '単語帳の暗記'],
+const expectObjectFactory = (title: string, description: string) => {
+  return {
+    title,
+    description,
+  }
 }
+
+const expectObjects = [
+  expectObjectFactory('国語の勉強', '音読と漢字の宿題'),
+  expectObjectFactory('数学の勉強', '計算ドリル'),
+  expectObjectFactory('英語の勉強', '単語帳の暗記'),
+]
 
 describe('TodoList', () => {
   it('タイトルが表示されている', () => {
@@ -25,16 +33,16 @@ describe('TodoList', () => {
     it('TODOタイトルが表示されている', () => {
       const { getByText } = setup()
 
-      expects.titles.forEach((title) => {
-        expect(getByText(title)).toBeInTheDocument()
+      expectObjects.forEach((expectObject) => {
+        expect(getByText(expectObject.title)).toBeInTheDocument()
       })
     })
 
     it('TODO の説明が表示されている', () => {
       const { getByText } = setup()
 
-      expects.descriptions.forEach((description) => {
-        expect(getByText(description)).toBeInTheDocument()
+      expectObjects.forEach((expectObject) => {
+        expect(getByText(expectObject.description)).toBeInTheDocument()
       })
     })
   })

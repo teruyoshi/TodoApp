@@ -6,6 +6,8 @@ services:
       target: dev
     ports:
       - "5173:5173"
+      - "6006:6006"
+      - "9323:9323"
     volumes:
       - ./front:/home/ubuntu/app/front
     tty: "true"

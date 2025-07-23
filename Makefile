@@ -8,7 +8,7 @@ FEATURE_DIR =
 TEST_DIR = $(if $(FEATURE_DIR),./internal/features/$(FEATURE_DIR)/,./)...
 
 # ターゲット一覧
-.PHONY: build up down destroy rebuild restart stop ps front go db logs go-lint lint go-fmt format go-test go-coverage open-go-coverage test clean
+.PHONY: build up down destroy rebuild restart stop ps front su-front go db logs go-lint lint go-fmt format go-test go-coverage open-go-coverage test clean
 
 # Docker関連
 build:down
@@ -37,6 +37,9 @@ ps:
 
 front:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec front bash
+
+su-front:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec -u root front bash
 
 go: 
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec go ash

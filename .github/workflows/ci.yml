@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test-react:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Node.jsをセットアップ
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 依存パッケージをインストール
+        run: npm install
+        working-directory: ./frontend  # 例: Reactアプリがfrontendディレクトリの場合
+
+      - name: Reactのテストを実行
+        run: npm test
+        working-directory: ./frontend  # 例: Reactアプリがfrontendディレクトリの場合
+
+  test-go:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: リポジトリをチェックアウト
+        uses: actions/checkout@v4
+
+      - name: Goをセットアップ
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'  # 任意のバージョンに変更可能
+
+      - name: Goの依存関係を取得
+        run: go mod download
+        working-directory: ./backend  # 例: Goアプリがbackendディレクトリの場合
+
+      - name: Goのテストを実行
+        run: go test ./...
+        working-directory: ./backend  # 例: Goアプリがbackendディレクトリの場合
