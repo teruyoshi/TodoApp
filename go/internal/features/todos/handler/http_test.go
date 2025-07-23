@@ -49,96 +49,98 @@ func newHandler(uc usecase.TodoCreator) *TodoHandler {
 	return NewTodoHandler(uc)
 }
 
-func TestCreate_Success(t *testing.T) {
-	todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
-	h := newHandler(stubUseCase{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
-		if todoValue != todo {
-			t.Errorf("unexpected input: %v", todoValue)
+func TestCreate(t *testing.T) {
+	t.Run("Todo の作成が成功する", func(t *testing.T) {
+		todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
+		h := newHandler(stubUseCase{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
+			if todoValue != todo {
+				t.Errorf("unexpected input: %v", todoValue)
+			}
+			return todo, nil
+		}})
+
+		body, _ := json.Marshal(todo)
+		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
+		w := httptest.NewRecorder()
+
+		h.Create(w, req)
+
+		if w.Code != http.StatusOK {
+			t.Fatalf("expected status 200, got %d", w.Code)
 		}
-		return todo, nil
-	}})
 
-	body, _ := json.Marshal(todo)
-	req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
-	w := httptest.NewRecorder()
+		if got := w.Header().Get("Content-Type"); got != "application/json" {
+			t.Fatalf("unexpected content type: %s", got)
+		}
 
-	h.Create(w, req)
+		var resp entity.Todo
+		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+			t.Fatalf("failed to decode response: %v", err)
+		}
 
-	if w.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d", w.Code)
-	}
+		if resp != todo {
+			t.Fatalf("unexpected todo: %+v", resp)
+		}
+	})
 
-	if got := w.Header().Get("Content-Type"); got != "application/json" {
-		t.Fatalf("unexpected content type: %s", got)
-	}
+	t.Run("Todo 作成の際に不正な JSON が指定されるとエラーする", func(t *testing.T) {
+		h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
+			return entity.Todo{}, nil
+		}})
 
-	var resp entity.Todo
-	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
-		t.Fatalf("failed to decode response: %v", err)
-	}
+		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewBufferString("invalid"))
+		w := httptest.NewRecorder()
 
-	if resp != todo {
-		t.Fatalf("unexpected todo: %+v", resp)
-	}
-}
+		h.Create(w, req)
 
-func TestCreate_InvalidJSON(t *testing.T) {
-	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
-		return entity.Todo{}, nil
-	}})
+		if w.Code != http.StatusBadRequest {
+			t.Fatalf("expected status 400, got %d", w.Code)
+		}
 
-	req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewBufferString("invalid"))
-	w := httptest.NewRecorder()
+		if !strings.Contains(w.Body.String(), "invalid json") {
+			t.Fatalf("unexpected body: %s", w.Body.String())
+		}
+	})
 
-	h.Create(w, req)
+	t.Run("Todo 作成の際に UseCase がエラーするとエラーする", func(t *testing.T) {
+		h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
+			return entity.Todo{}, errors.New("db error")
+		}})
 
-	if w.Code != http.StatusBadRequest {
-		t.Fatalf("expected status 400, got %d", w.Code)
-	}
+		todo := entity.Todo{TodoTitle: "title"}
+		body, _ := json.Marshal(todo)
+		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
+		w := httptest.NewRecorder()
 
-	if !strings.Contains(w.Body.String(), "invalid json") {
-		t.Fatalf("unexpected body: %s", w.Body.String())
-	}
-}
+		h.Create(w, req)
 
-func TestCreate_UseCaseError(t *testing.T) {
-	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
-		return entity.Todo{}, errors.New("db error")
-	}})
+		if w.Code != http.StatusInternalServerError {
+			t.Fatalf("expected status 500, got %d", w.Code)
+		}
 
-	todo := entity.Todo{TodoTitle: "title"}
-	body, _ := json.Marshal(todo)
-	req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
-	w := httptest.NewRecorder()
+		if !strings.Contains(w.Body.String(), "failed to create todo") {
+			t.Fatalf("unexpected body: %s", w.Body.String())
+		}
+	})
 
-	h.Create(w, req)
+	t.Run("Todo 作成の際にエンコーディングに失敗するとエラーする", func(t *testing.T) {
+		todo := entity.Todo{TodoTitle: "title"}
+		h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
+			return todo, nil
+		}})
 
-	if w.Code != http.StatusInternalServerError {
-		t.Fatalf("expected status 500, got %d", w.Code)
-	}
+		body, _ := json.Marshal(todo)
+		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
+		w := &failingResponseWriter{}
 
-	if !strings.Contains(w.Body.String(), "failed to create todo") {
-		t.Fatalf("unexpected body: %s", w.Body.String())
-	}
-}
+		h.Create(w, req)
 
-func TestCreate_EncodingError(t *testing.T) {
-	todo := entity.Todo{TodoTitle: "title"}
-	h := newHandler(stubUseCase{execFunc: func(t entity.Todo) (entity.Todo, error) {
-		return todo, nil
-	}})
+		if w.statusCode != http.StatusInternalServerError {
+			t.Fatalf("expected status 500, got %d", w.statusCode)
+		}
 
-	body, _ := json.Marshal(todo)
-	req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
-	w := &failingResponseWriter{}
-
-	h.Create(w, req)
-
-	if w.statusCode != http.StatusInternalServerError {
-		t.Fatalf("expected status 500, got %d", w.statusCode)
-	}
-
-	if !strings.Contains(w.body.String(), "failed to encode json") {
-		t.Fatalf("unexpected body: %s", w.body.String())
-	}
+		if !strings.Contains(w.body.String(), "failed to encode json") {
+			t.Fatalf("unexpected body: %s", w.body.String())
+		}
+	})
 }
