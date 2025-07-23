@@ -18,10 +18,12 @@ github.com/teruyoshi/todoApp/internal/features/todos/handler/http.go:26.2,27.16 
 github.com/teruyoshi/todoApp/internal/features/todos/handler/http.go:27.16,30.3 2 1
 github.com/teruyoshi/todoApp/internal/features/todos/handler/http.go:32.2,33.56 2 1
 github.com/teruyoshi/todoApp/internal/features/todos/handler/http.go:33.56,36.3 2 1
-github.com/teruyoshi/todoApp/internal/features/todos/handler/http.go:39.69,41.2 1 0
+github.com/teruyoshi/todoApp/internal/features/todos/handler/http.go:39.69,41.2 1 1
 github.com/teruyoshi/todoApp/internal/features/todos/handler/mock_http.go:16.71,18.2 1 0
 github.com/teruyoshi/todoApp/internal/features/todos/handler/mock_http.go:25.74,27.2 1 0
 github.com/teruyoshi/todoApp/internal/features/todos/handler/mock_http.go:29.73,31.2 1 0
+github.com/teruyoshi/todoApp/internal/features/todos/usecase/create.go:19.69,21.2 1 1
+github.com/teruyoshi/todoApp/internal/features/todos/usecase/create.go:23.73,25.2 1 1
 github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/repository.go:16.53,18.2 1 1
 github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/repository.go:20.64,22.2 1 0
 github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/repository.go:24.69,31.52 2 1
@@ -33,6 +35,4 @@ github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/repository
 github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/repository.go:50.29,57.3 1 1
 github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/repository.go:58.2,58.19 1 1
 github.com/teruyoshi/todoApp/internal/features/todos/repository/mysql/t_todo.go:11.33,13.2 1 1
-github.com/teruyoshi/todoApp/internal/features/todos/usecase/create.go:19.69,21.2 1 1
-github.com/teruyoshi/todoApp/internal/features/todos/usecase/create.go:23.73,25.2 1 1
 github.com/teruyoshi/todoApp/internal/router/todo.go:14.60,17.2 2 1

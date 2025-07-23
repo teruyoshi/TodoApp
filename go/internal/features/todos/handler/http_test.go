@@ -6,6 +6,7 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -159,37 +160,39 @@ func TestCreate(t *testing.T) {
 	})
 }
 
-// func TestFetch(t *testing.T) {
-// 	t.Run("Todo の取得が成功する", func(t *testing.T) {
+func TestFetch(t *testing.T) {
+	t.Run("Todo の取得が成功する", func(t *testing.T) {
+		todos := []entity.Todo{
+			{TodoTitle: "国語の勉強", TodoDescription: "音読と漢字の宿題"},
+			{TodoTitle: "数学の勉強", TodoDescription: "計算ドリル"},
+			{TodoTitle: "英語の勉強", TodoDescription: "単語帳の暗記"},
+		}
+		h := newHandler(stubCreator{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
+			return todos[0], nil
+		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
+			return todos, nil
+		}})
 
-// 		todo := entity.Todo{TodoTitle: "title", TodoDescription: "desc"}
-// 		h := newHandler(stubCreator{execFunc: func(todoValue entity.Todo) (entity.Todo, error) {
-// 			return todo, nil
-// 		}}, stubFetcher{execFunc: func() ([]entity.Todo, error) {
-// 			return []entity.Todo{todo}, nil
-// 		}})
+		req := httptest.NewRequest(http.MethodGet, "/todos", nil)
+		w := httptest.NewRecorder()
 
-// 		body, _ := json.Marshal(todo)
-// 		req := httptest.NewRequest(http.MethodPost, "/todos", bytes.NewReader(body))
-// 		w := httptest.NewRecorder()
+		h.Fetch(w, req)
 
-// 		h.Create(w, req)
+		if w.Code != http.StatusOK {
+			t.Fatalf("expected status 200, got %d", w.Code)
+		}
 
-// 		if w.Code != http.StatusOK {
-// 			t.Fatalf("expected status 200, got %d", w.Code)
-// 		}
+		if got := w.Header().Get("Content-Type"); got != "application/json" {
+			t.Fatalf("unexpected content type: %s", got)
+		}
 
-// 		if got := w.Header().Get("Content-Type"); got != "application/json" {
-// 			t.Fatalf("unexpected content type: %s", got)
-// 		}
+		var resp []entity.Todo
+		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+			t.Fatalf("failed to decode response: %v", err)
+		}
 
-// 		var resp entity.Todo
-// 		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
-// 			t.Fatalf("failed to decode response: %v", err)
-// 		}
-
-// 		if resp != todo {
-// 			t.Fatalf("unexpected todo: %+v", resp)
-// 		}
-// 	})
-// }
+		if !reflect.DeepEqual(resp, todos) {
+			t.Fatalf("unexpected todo: %+v", resp)
+		}
+	})
+}
