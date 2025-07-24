@@ -1,8 +1,23 @@
 import { render } from '@testing-library/react'
 import { TodoList } from '../../components'
+import { ReduxProvider } from '@/providers'
+
+jest.mock('../../api/todoListApi', () => ({
+  useFetchTodosQuery: jest.fn(() => ({
+    data: [
+      { id: 1, todoTitle: '国語の勉強', todoDescription: '音読と漢字の宿題' },
+      { id: 2, todoTitle: '数学の勉強', todoDescription: '計算ドリル' },
+      { id: 3, todoTitle: '英語の勉強', todoDescription: '単語帳の暗記' },
+    ],
+  })),
+}))
 
 const setup = () => {
-  const Component = <TodoList />
+  const Component = (
+    <ReduxProvider>
+      <TodoList />
+    </ReduxProvider>
+  )
   const screen = render(Component)
 
   return {
