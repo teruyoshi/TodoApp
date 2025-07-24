@@ -28,7 +28,7 @@ func main() {
 
 	// CORS の設定
 	router.Use(cors.Handler(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:5173"}, // 許可するオリジンを指定
+		AllowedOrigins:   []string{"http://localhost:5173", "http://front:5173"}, // 許可するオリジンを指定
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},

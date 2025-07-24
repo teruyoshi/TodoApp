@@ -3,10 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe.configure({ mode: 'parallel' })
 
 test('/todo ページ TODO を追加して表示される', async ({ page }) => {
-  await page.goto('http://front:5173/todo')
-
-  const body = await page.locator('body')
-  console.log('body:', await body.textContent())
+  await page.goto('http://localhost:5173/todo')
 
   page.on('request', (request) => {
     console.log('>>', request.method(), request.url())
@@ -19,8 +16,8 @@ test('/todo ページ TODO を追加して表示される', async ({ page }) => 
   await page.getByLabel('説明').fill('TODO の説明')
   await page.getByRole('button', { name: '追加' }).click()
 
-  await expect(page.locator('body')).toContainText('TODO のタイトル')
-  await expect(page.locator('body')).toContainText('TODO の説明')
+  await expect(page.getByRole('listitem')).toHaveText('TODO のタイトル')
+  await expect(page.getByRole('listitem')).toHaveText('TODO の説明')
 })
 
 // test('/todo ページでタイトルが表示されている', async ({ page }) => {

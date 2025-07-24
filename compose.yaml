@@ -3,16 +3,17 @@ services:
     build:
       context: .
       dockerfile: docker/e2e/Dockerfile
-    init: true
-    ipc: host
-    extra_hosts:
-      - "hostmachine:host-gateway"
+    # init: true
+    # ipc: host
+    # extra_hosts:
+    #   - "hostmachine:host-gateway"
     ports:
       - "9323:9323"
-    # networks:
-    #   - e2e_test_network
-    # depends_on:
-    #   - front
+    networks:
+      - e2e_test_network
+    depends_on:
+      - front
+    hostname: e2e
     volumes:
       - ./e2e/playwright-report:/app/playwright-report
       - ./e2e/test-results:/app/test-results
@@ -25,12 +26,14 @@ services:
       context: .
       dockerfile: docker/front/Dockerfile
       target: dev
+    env_file:
+      docker/front/.env.docker
     ports:
       - "5173:5173"
       - "6006:6006"
       # - "9323:9323"
-    # networks:
-    #   - e2e_test_network
+    networks:
+      - e2e_test_network
     volumes:
       - ./front:/home/ubuntu/app/front
     tty: "true"
@@ -48,6 +51,7 @@ services:
       - db
     networks:
       - db_network
+      - e2e_test_network
     volumes:
       - ./go:/home/go/src/app
     tty: "true"
@@ -75,4 +79,4 @@ volumes:
 
 networks:
   db_network:
-  # e2e_test_network:
+  e2e_test_network:
