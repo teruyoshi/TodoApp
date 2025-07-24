@@ -17,7 +17,7 @@
     "skipLibCheck": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"],
+      "@/*": ["src/*"]
     },
     "incremental": true,
     "tsBuildInfoFile": "./.tsbuildinfo",
@@ -25,6 +25,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "tests", "playwright.config.ts"],
   "exclude": ["node_modules", "dist", "build"]
 }

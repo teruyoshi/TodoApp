@@ -12,7 +12,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "storybook": "storybook dev -p 6006 --no-open",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "playwright": "playwright test --config=playwright.config.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
