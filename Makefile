@@ -8,7 +8,7 @@ FEATURE_DIR =
 TEST_DIR = $(if $(FEATURE_DIR),./internal/features/$(FEATURE_DIR)/,./)...
 
 # ターゲット一覧
-.PHONY: build up down destroy rebuild restart stop ps front e2e su-front go db logs go-lint lint go-fmt format go-test go-coverage open-go-coverage test clean
+.PHONY: build up down destroy rebuild restart stop ps front e2e e2e-test su-front go db logs go-lint tsc-check lint go-fmt format go-test go-coverage open-go-coverage test clean
 
 # Docker関連
 build:down
@@ -41,6 +41,9 @@ front:
 e2e:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec e2e bash
 
+e2e-test:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec e2e npm run test
+
 su-front:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec -u root front bash
 
@@ -54,6 +57,8 @@ logs:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) logs -f
 
 # コード品質関連
+tsc-check:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec front npm run tsc -- --noEmit
 
 lint:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec front npm run lint

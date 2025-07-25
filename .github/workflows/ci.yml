@@ -2,47 +2,85 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  test-react:
+  build-and-test:
     runs-on: ubuntu-latest
+    env:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: todo_app
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: password
+      DATABASE_PORT: 3306
+      DATABASE_HOST: db
+      DATABASE_DBNAME: todo_app
+      DATABASE_USER: mysqluser
+      DATABASE_PASSWORD: password
+      SERVER_PORT: 8080
 
     steps:
-      - name: リポジトリをチェックアウト
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Node.jsをセットアップ
-        uses: actions/setup-node@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
         with:
-          node-version: '18'
+          path: front/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
 
-      - name: 依存パッケージをインストール
-        run: npm install
-        working-directory: ./frontend  # 例: Reactアプリがfrontendディレクトリの場合
-
-      - name: Reactのテストを実行
-        run: npm test
-        working-directory: ./frontend  # 例: Reactアプリがfrontendディレクトリの場合
-
-  test-go:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: リポジトリをチェックアウト
-        uses: actions/checkout@v4
-
-      - name: Goをセットアップ
-        uses: actions/setup-go@v5
+      - name: Cache Go go_modules
+        uses: actions/cache@v4
         with:
-          go-version: '1.22'  # 任意のバージョンに変更可能
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
-      - name: Goの依存関係を取得
-        run: go mod download
-        working-directory: ./backend  # 例: Goアプリがbackendディレクトリの場合
+      - name: Docker Compose build
+        run: make build
 
-      - name: Goのテストを実行
-        run: go test ./...
-        working-directory: ./backend  # 例: Goアプリがbackendディレクトリの場合
+      - name: Docker Compose up
+        run: make up
+    
+      - name: Wait for DB
+        run: |
+          until docker compose exec db mysqladmin ping -h "localhost" --silent; do
+            echo "Waiting for db connection..."
+            sleep 2
+          done
+
+      - name: Frontend Lint
+        run: make lint
+
+      - name: Frontend TypeScript Check
+        run: make tsc-check
+
+      - name: Frontend Format
+        run: make format
+
+      - name: Frontend Test
+        run: make test
+
+      - name: Go Lint
+        run: make go-lint
+
+      - name: Go Format
+        run: make go-fmt
+
+      - name: Go Test
+        run: make go-test
+
+      - name: E2E Test (Playwright)
+        run: make e2e-test
+
+      - name: Docker Compose Down
+        if: always()
+        run: make down
