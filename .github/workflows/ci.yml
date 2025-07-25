@@ -61,7 +61,7 @@ jobs:
         run: make up
     
       - name: Wait for starting
-      - run: docker compose up -d --wait
+        run: docker compose up -d --wait
 
       - name: Frontend Lint
         run: make lint
