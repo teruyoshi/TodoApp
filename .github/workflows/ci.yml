@@ -18,7 +18,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat <<EOF > go/.env
+          cat <<EOF > .env
             DATABASE_PORT=3306
             DATABASE_HOST=db
             DATABASE_DBNAME=todo_app
@@ -26,6 +26,15 @@ jobs:
             DATABASE_PASSWORD=password
             SERVER_PORT=8080
             AUTH_JWTSECRET=sample
+          EOF
+
+      - name: Create Go .env file
+        run: |
+          cat <<EOF > go/.env
+            MYSQL_ROOT_PASSWORD=rootpassword
+            MYSQL_DATABASE=todo_app
+            MYSQL_USER=mysqluser
+            MYSQL_PASSWORD=password
           EOF
 
       - name: Set up Docker Buildx
