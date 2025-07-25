@@ -11,21 +11,22 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    env:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: todo_app
-      MYSQL_USER: mysqluser
-      MYSQL_PASSWORD: password
-      DATABASE_PORT: 3306
-      DATABASE_HOST: db
-      DATABASE_DBNAME: todo_app
-      DATABASE_USER: mysqluser
-      DATABASE_PASSWORD: password
-      SERVER_PORT: 8080
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Create .env file
+        run: |
+          cat <<EOF > go/.env
+            DATABASE_PORT=3306
+            DATABASE_HOST=db
+            DATABASE_DBNAME=todo_app
+            DATABASE_USER=mysqluser
+            DATABASE_PASSWORD=password
+            SERVER_PORT=8080
+            AUTH_JWTSECRET=sample
+          EOF
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3

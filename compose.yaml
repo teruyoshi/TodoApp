@@ -26,8 +26,6 @@ services:
       context: .
       dockerfile: docker/front/Dockerfile
       target: dev
-    env_file:
-      docker/front/.env.docker
     ports:
       - "5173:5173"
       - "6006:6006"
