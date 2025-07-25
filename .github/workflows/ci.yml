@@ -60,12 +60,8 @@ jobs:
       - name: Docker Compose up
         run: make up
     
-      - name: Wait for DB
-        run: |
-          until docker compose exec db mysqladmin ping -h "localhost" --silent; do
-            echo "Waiting for db connection..."
-            sleep 2
-          done
+      - name: Wait for starting
+      - run: docker compose up -d --wait
 
       - name: Frontend Lint
         run: make lint
