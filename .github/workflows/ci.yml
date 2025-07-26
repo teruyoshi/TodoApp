@@ -54,8 +54,21 @@ jobs:
             ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
-      - name: Docker Compose build
-        run: make build
+      - name: Cache Docker layers
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-cache-todo
+          key: ${{ runner.os }}-buildx-todo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-todo-
+
+      - name: setting build-push-action
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache-todo
+          cache-to: type=local,dest=/tmp/.buildx-cache-todo,mode=max
 
       - name: Docker Compose up
         run: make up
