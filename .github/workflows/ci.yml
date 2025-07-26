@@ -66,7 +66,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/front_prod/Dockerfile
+          file: docker/front/Dockerfile
           push: false
           cache-from: type=gha,src=/tmp/.buildx-cache-todo
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
@@ -75,8 +75,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/go_prod/Dockerfile
-          target: build
+          file: docker/go/Dockerfile
+          target: builder
           push: false
           cache-from: type=gha,src=/tmp/.buildx-cache-todo
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
