@@ -94,6 +94,18 @@ jobs:
       - name: Wait for starting
         run: make up-wait
 
+      - name: Frontend Container Debug Log
+        run: docker compose -f compose.ci.yaml logs front
+
+      - name: Go Container Debug Log
+        run: docker compose -f compose.ci.yaml logs go
+
+      - name: E2E Container Debug Log
+        run: docker compose -f compose.ci.yaml logs e2e
+
+      - name: DB Container Debug Log
+        run: docker compose -f compose.ci.yaml logs db
+
       - name: Frontend Lint
         run: make lint
 
