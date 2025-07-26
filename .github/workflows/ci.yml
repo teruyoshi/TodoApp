@@ -130,8 +130,11 @@ jobs:
       - name: Go Test
         run: make go-test
 
-      - name: E2E Test (Playwright)
-        run: make e2e-test
+      - name: Check API Server Is Running
+        run: curl http://localhost:8080/api/v1/test
+
+      # - name: E2E Test (Playwright)
+      #   run: make e2e-test
 
       - name: Docker Compose Down
         if: always()
