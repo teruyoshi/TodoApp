@@ -3,7 +3,7 @@ include .env
 
 # 環境変数の定義
 DOCKER_COMPOSE = docker compose
-DOCKER_COMPOSE_FILE = compose.yaml
+# DOCKER_COMPOSE_FILE = compose.yaml
 FEATURE_DIR = 
 TEST_DIR = $(if $(FEATURE_DIR),./internal/features/$(FEATURE_DIR)/,./)...
 
