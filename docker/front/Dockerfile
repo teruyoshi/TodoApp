@@ -11,6 +11,8 @@ EXPOSE 6006
 
 WORKDIR /home/node/app/front
 
+RUN mkdir -p /home/node/app/front && chown -R node:node /home/node/app/front
+
 USER node
 
 # 依存関係のキャッシュ活用

@@ -9,9 +9,10 @@ RUN groupadd -g 1000 go && \
 
 USER go
 
-RUN mkdir -p ~/src/app
-
 WORKDIR /home/go/src/app
+
+RUN mkdir -p /home/go/src/app && chown -R go:go /home/go/src/app
+
 ENV CGO_ENABLED=1
 
 RUN go install github.com/air-verse/air@latest
