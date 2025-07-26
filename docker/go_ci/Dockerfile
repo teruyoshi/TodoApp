@@ -11,7 +11,7 @@ RUN go mod download
 COPY ./go .
 
 # ビルド（main.go をエントリーポイントにしている場合）
-RUN go build -o app/cmd/todo_app
+RUN go build -o app/ app/cmd/todo_app
 
 # 実行ステージ
 FROM alpine:3.21
