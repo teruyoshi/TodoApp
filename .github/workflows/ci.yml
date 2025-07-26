@@ -106,15 +106,6 @@ jobs:
       - name: DB Container Debug Log
         run: docker compose -f compose.ci.yaml logs db
 
-      # - name: Wait for Vite server ready (watching logs)
-      #   run: |
-      #     timeout 60s bash -c '
-      #       until docker compose -f compose.ci.yaml logs front 2>&1 | grep -q "Local:"; do
-      #         sleep 2
-      #       done
-      #     '
-      #     echo "Vite is ready!"
-
       - name: Docker Container List
         run: make ps
 
