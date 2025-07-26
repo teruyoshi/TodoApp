@@ -26,8 +26,8 @@ services:
       - "6006:6006"
     networks:
       - e2e_test_network
-    volumes:
-      - ./front:/home/node/app/front
+    # volumes:
+    #   - ./front:/home/node/app/front
     tty: "true"
 
   go:
