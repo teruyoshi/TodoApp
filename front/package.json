@@ -12,6 +12,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
+    "format": "prettier --write './src/**/*.{js,ts,jsx,tsx}'",
     "storybook": "storybook dev -p 6006 --no-open",
     "build-storybook": "storybook build",
     "playwright": "playwright test --config=playwright.config.ts"
