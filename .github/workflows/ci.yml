@@ -62,13 +62,32 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildx-todo-
 
-      - name: setting build-push-action
+      - name: build front image
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: docker/front/Dockerfile
           push: false
           cache-from: type=local,src=/tmp/.buildx-cache-todo
           cache-to: type=local,dest=/tmp/.buildx-cache-todo,mode=max
+
+      - name: build go image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/go/Dockerfile
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache-todo
+          cache-to: type=local,dest=/tmp/.buildx-cache-todo,mode=max
+
+      - name: build e2e image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: docker/e2e/Dockerfile
+          push: false
+          cache-from: type=local,src=/tmp/.buildx-cache-todo
+          cache-to: type=local,dest=/tmp/.buildx-cache-todo,mode=max     
 
       - name: Docker Compose up
         run: make up
