@@ -93,6 +93,10 @@ jobs:
 
       - name: Docker Compose up
         run: make up
+
+      - name: Show go container logs
+        if: failure()
+        run: docker compose logs go
     
       - name: Wait for starting
         run: docker compose up -d --wait
