@@ -113,7 +113,7 @@ jobs:
               sleep 2
             done
           '
-        echo "Vite is ready!"
+          echo "Vite is ready!"
 
       - name: Frontend Lint
         run: make lint
