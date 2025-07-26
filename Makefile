@@ -8,7 +8,7 @@ FEATURE_DIR =
 TEST_DIR = $(if $(FEATURE_DIR),./internal/features/$(FEATURE_DIR)/,./)...
 
 # ターゲット一覧
-.PHONY: build up down destroy rebuild restart stop ps front e2e e2e-test su-front go db logs go-lint tsc-check lint go-fmt format go-test go-coverage open-go-coverage test clean
+.PHONY: build up up-wait down destroy rebuild restart stop ps front e2e e2e-test su-front go db logs go-lint tsc-check lint go-fmt format go-test go-coverage open-go-coverage test clean
 
 # Docker関連
 build:down
@@ -16,6 +16,9 @@ build:down
 
 up:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d
+
+up-wait:
+  $(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d --wait
 
 down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down

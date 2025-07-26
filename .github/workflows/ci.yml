@@ -23,6 +23,7 @@ jobs:
             MYSQL_DATABASE=todo_app
             MYSQL_USER=mysqluser
             MYSQL_PASSWORD=password
+            DOCKER_COMPOSE_FILE=compose.ci.yaml
           EOF
 
       - name: Create Go .env file
@@ -89,18 +90,9 @@ jobs:
           push: false
           cache-from: type=gha,src=/tmp/.buildx-cache-todo
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max     
-
-      - name: Docker Compose up
-        run: docker compose -f compose.ci.yaml up -d
-
-      - name: Show go container logs (1)
-        run: docker compose logs go
     
       - name: Wait for starting
-        run: docker compose up -d --wait
-
-      - name: Show go container logs (2)
-        run: docker compose logs go
+        run: make up-wait
 
       - name: Frontend Lint
         run: make lint
