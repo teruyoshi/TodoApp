@@ -91,7 +91,7 @@ jobs:
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max     
 
       - name: Docker Compose up
-        run: docker compose -f compose.ci.yml up -d
+        run: docker compose -f compose.ci.yaml up -d
 
       - name: Show go container logs (1)
         run: docker compose logs go
