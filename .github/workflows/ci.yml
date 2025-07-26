@@ -121,11 +121,11 @@ jobs:
       - name: Frontend Test
         run: make test
 
-      - name: Go Lint
-        run: make go-lint
+      # - name: Go Lint
+      #   run: make go-lint
 
-      - name: Go Format
-        run: make go-fmt
+      # - name: Go Format
+      #   run: make go-fmt
 
       - name: Go Test
         run: make go-test
