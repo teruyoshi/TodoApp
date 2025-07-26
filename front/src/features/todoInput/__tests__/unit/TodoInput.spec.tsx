@@ -1,6 +1,7 @@
-import { cleanup, render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { TodoInput } from '../../components'
+import { TodoInputFormInputs } from '../../components/TodoInputForm'
 
 const spyOnProps = jest.fn()
 const createTodoMock = jest.fn()
@@ -11,29 +12,26 @@ jest.mock('../../api/todoInputApi', () => ({
 
 jest.mock('../../components/TodoInputForm', () => ({
   __esModule: true,
-  default: (props: any) => {
+  default: (props: {
+    onSubmitHandler: (data: TodoInputFormInputs) => void
+  }) => {
     spyOnProps(props)
     return <div>TodoInputForm</div>
   },
 }))
 
 const setup = () => {
-  const screen = render(<TodoInput />)
-
-  return {
-    ...screen,
-  }
+  render(<TodoInput />)
 }
 
 afterEach(() => {
   jest.clearAllMocks()
-  cleanup()
 })
 
 describe('TodoInputs', () => {
   it('タイトルが表示されている', () => {
-    const { getByRole } = setup()
-    const title = getByRole('heading', { name: 'Todoを追加' })
+    setup()
+    const title = screen.getByRole('heading', { name: 'Todoを追加' })
 
     expect(title).toBeInTheDocument()
   })
