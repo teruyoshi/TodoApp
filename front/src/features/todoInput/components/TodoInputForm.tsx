@@ -42,7 +42,7 @@ function TodoInputForm(props: TodoInputFormProps) {
     if (formState.isSubmitSuccessful) {
       reset()
     }
-  }, [formState])
+  }, [formState, reset])
 
   return (
     <FormProvider {...methods}>

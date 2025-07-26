@@ -36,7 +36,7 @@ function TodoPeriodInputs(props: TodoPeriodInputsProps) {
     } else {
       clearErrors(name)
     }
-  }, [from, to, setError, clearErrors])
+  }, [from, to, setError, clearErrors, name])
 
   return (
     <>
