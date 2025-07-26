@@ -18,7 +18,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          cat <<EOF > go/.env
+          cat <<EOF > .env
             MYSQL_ROOT_PASSWORD=rootpassword
             MYSQL_DATABASE=todo_app
             MYSQL_USER=mysqluser
@@ -27,7 +27,7 @@ jobs:
 
       - name: Create Go .env file
         run: |
-          cat <<EOF > .env
+          cat <<EOF > go/.env
             DATABASE_PORT=3306
             DATABASE_HOST=db
             DATABASE_DBNAME=todo_app
