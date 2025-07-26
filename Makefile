@@ -18,7 +18,7 @@ up:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d
 
 up-wait:
-  $(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d --wait
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d --wait
 
 down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
