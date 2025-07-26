@@ -115,6 +115,9 @@ jobs:
       #     '
       #     echo "Vite is ready!"
 
+      - name: Docker Container List
+        run: make ps
+
       - name: Frontend Lint
         run: make lint
 
