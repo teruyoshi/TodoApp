@@ -1,6 +1,6 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import dayjs from 'dayjs'
+import dayjs, { Dayjs } from 'dayjs'
 
 import { DayjsLocalizationProvider } from '@/providers'
 import { FormTestDriver } from '@/__tests__/drivers'
@@ -8,9 +8,9 @@ import { FormTestDriver } from '@/__tests__/drivers'
 import { TodoPeriodToInput } from '../../../../components/formParts/period'
 
 const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
-  const screen = render(
+  render(
     <DayjsLocalizationProvider>
-      <FormTestDriver
+      <FormTestDriver<{ test: Dayjs }>
         defaultValues={{ test: dayjs(dayjs().format('YYYY/MM/DD')) }}
         onSubmitHandler={onSubmitHandlerMock || jest.fn()}
         spyOnError={spyOnError || jest.fn()}
@@ -20,9 +20,8 @@ const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
     </DayjsLocalizationProvider>
   )
 
-  const { getByLabelText, getByRole } = screen
-  const dateToInput = getByLabelText('終了日')
-  const submitButton = getByRole('button', { name: '送信' })
+  const dateToInput = screen.getByLabelText('終了日')
+  const submitButton = screen.getByRole('button', { name: '送信' })
 
   return {
     screen,
@@ -57,7 +56,7 @@ describe('TodoPeriodToInput', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { screen, dateToInput, submitButton } = setup(
+      const { dateToInput, submitButton } = setup(
         onSubmitHandlerMock,
         spyOnError
       )
@@ -66,7 +65,7 @@ describe('TodoPeriodToInput', () => {
       await userEvent.clear(dateToInput)
       await userEvent.click(submitButton)
 
-      return { onSubmitHandlerMock, spyOnError, ...screen }
+      return { onSubmitHandlerMock, spyOnError }
     }
 
     it('フォームにエラーが発生する', async () => {
@@ -78,8 +77,8 @@ describe('TodoPeriodToInput', () => {
     })
 
     it('エラーメッセージが表示される', async () => {
-      const { getByText } = await emptyOperationSetup()
-      expect(getByText('終了日を入力してください')).toBeInTheDocument()
+      await emptyOperationSetup()
+      expect(screen.getByText('終了日を入力してください')).toBeInTheDocument()
     })
 
     it('フォームが送信出来ない', async () => {

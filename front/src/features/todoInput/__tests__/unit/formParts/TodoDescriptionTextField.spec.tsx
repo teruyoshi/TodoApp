@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { FormTestDriver } from '@/__tests__/drivers'
@@ -6,8 +6,8 @@ import { FormTestDriver } from '@/__tests__/drivers'
 import { TodoDescriptionTextField } from '../../../components/formParts'
 
 const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
-  const screen = render(
-    <FormTestDriver
+  render(
+    <FormTestDriver<{ test: string }>
       defaultValues={{ test: '' }}
       onSubmitHandler={onSubmitHandlerMock || jest.fn()}
       spyOnError={spyOnError || jest.fn()}
@@ -16,12 +16,10 @@ const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
     </FormTestDriver>
   )
 
-  const { getByLabelText, getByRole } = screen
-  const descriptionInput = getByLabelText('説明')
-  const submitButton = getByRole('button', { name: '送信' })
+  const descriptionInput = screen.getByLabelText('説明')
+  const submitButton = screen.getByRole('button', { name: '送信' })
 
   return {
-    screen,
     descriptionInput,
     submitButton,
   }
@@ -53,7 +51,7 @@ describe('TodoDescriptionTextField', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { screen, descriptionInput, submitButton } = setup(
+      const { descriptionInput, submitButton } = setup(
         onSubmitHandlerMock,
         spyOnError
       )
@@ -62,7 +60,7 @@ describe('TodoDescriptionTextField', () => {
       await userEvent.clear(descriptionInput)
       await userEvent.click(submitButton)
 
-      return { onSubmitHandlerMock, spyOnError, ...screen }
+      return { onSubmitHandlerMock, spyOnError }
     }
 
     it('フォームにエラーが発生する', async () => {
@@ -74,8 +72,8 @@ describe('TodoDescriptionTextField', () => {
     })
 
     it('エラーメッセージが表示される', async () => {
-      const { getByText } = await emptyOperationSetup()
-      expect(getByText('説明を入力してください')).toBeInTheDocument()
+      await emptyOperationSetup()
+      expect(screen.getByText('説明を入力してください')).toBeInTheDocument()
     })
 
     it('フォームが送信出来ない', async () => {
@@ -89,7 +87,7 @@ describe('TodoDescriptionTextField', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { screen, descriptionInput, submitButton } = setup(
+      const { descriptionInput, submitButton } = setup(
         onSubmitHandlerMock,
         spyOnError
       )
@@ -104,7 +102,7 @@ describe('TodoDescriptionTextField', () => {
       await userEvent.type(descriptionInput, textLength201)
       await userEvent.click(submitButton)
 
-      return { onSubmitHandlerMock, spyOnError, ...screen }
+      return { onSubmitHandlerMock, spyOnError }
     }
 
     it('フォームにエラーが発生する', async () => {
@@ -116,9 +114,9 @@ describe('TodoDescriptionTextField', () => {
     })
 
     it('エラーメッセージが表示される', async () => {
-      const { getByText } = await overTextOperationSetup()
+      await overTextOperationSetup()
       expect(
-        getByText('説明は200文字以内で入力してください')
+        screen.getByText('説明は200文字以内で入力してください')
       ).toBeInTheDocument()
     })
 
