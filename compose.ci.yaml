@@ -1,0 +1,74 @@
+services:
+  e2e:
+    build:
+      context: .
+      dockerfile: docker/e2e/Dockerfile
+    ports:
+      - "9323:9323"
+    networks:
+      - e2e_test_network
+    depends_on:
+      - front
+    hostname: e2e
+    volumes:
+      - ./e2e/playwright-report:/app/playwright-report
+      - ./e2e/test-results:/app/test-results
+      - ./e2e/tests:/app/tests
+      - ./e2e/playwright.config.ts:/app/playwright.config.ts
+    tty: "true"
+
+  front:
+    build:
+      context: .
+      dockerfile: docker/front/Dockerfile
+    ports:
+      - "5173:5173"
+      - "6006:6006"
+    networks:
+      - e2e_test_network
+    volumes:
+      - ./front:/home/node/app/front
+    tty: "true"
+
+  go:
+    build:
+      context: .
+      dockerfile: docker/go_ci/Dockerfile
+      target: build
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./go/.env
+    depends_on:
+      - db
+    networks:
+      - db_network
+      - e2e_test_network
+    volumes:
+      - ./go:/home/go/src/app
+    tty: "true"
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      LANG: ja_JP.UTF-8
+      LANGUAGE: ja_JP:ja
+      LC_ALL: ja_JP.UTF-8
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - db_network
+
+volumes:
+  db_data:
+    name: todo-app
+
+networks:
+  db_network:
+  e2e_test_network:

@@ -75,8 +75,8 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/go/Dockerfile
-          target: builder
+          file: docker/go_ci/Dockerfile
+          target: build
           push: false
           cache-from: type=gha,src=/tmp/.buildx-cache-todo
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
@@ -91,7 +91,7 @@ jobs:
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max     
 
       - name: Docker Compose up
-        run: make up
+        run: docker compose -f compose.ci.yml up -d
 
       - name: Show go container logs (1)
         run: docker compose logs go
