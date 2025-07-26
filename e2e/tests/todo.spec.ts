@@ -19,24 +19,8 @@ test('/todo ページ TODO を追加して表示される', async ({ page }) => 
   await page.getByLabel('説明').fill('TODO の説明')
   await page.getByRole('button', { name: '追加' }).click()
 
+  await page.getByText('TODO のタイトル').waitFor()
+
   await expect(page.locator('body')).toContainText('TODO のタイトル')
   await expect(page.locator('body')).toContainText('TODO の説明')
 })
-
-// test('/todo ページでタイトルが表示されている', async ({ page }) => {
-//   await page.goto('http://localhost:5173/todo')
-
-//   await expect(page).toHaveTitle('TODO管理アプリ')
-// })
-
-// test('get started link', async ({ page }) => {
-//   await page.goto('https://playwright.dev/')
-
-//   // Click the get started link.
-//   await page.getByRole('link', { name: 'Get started' }).click()
-
-//   // Expects page to have a heading with the name of Installation.
-//   await expect(
-//     page.getByRole('heading', { name: 'Installation' })
-//   ).toBeVisible()
-// })

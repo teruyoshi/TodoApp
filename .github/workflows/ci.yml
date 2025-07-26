@@ -67,6 +67,7 @@ jobs:
         with:
           context: .
           file: docker/front/Dockerfile
+          target: dev
           push: false
           cache-from: type=local,src=/tmp/.buildx-cache-todo
           cache-to: type=local,dest=/tmp/.buildx-cache-todo,mode=max
@@ -76,6 +77,7 @@ jobs:
         with:
           context: .
           file: docker/go/Dockerfile
+          target: builder
           push: false
           cache-from: type=local,src=/tmp/.buildx-cache-todo
           cache-to: type=local,dest=/tmp/.buildx-cache-todo,mode=max
