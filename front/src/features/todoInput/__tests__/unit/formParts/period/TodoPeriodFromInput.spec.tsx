@@ -1,14 +1,20 @@
-import { FormTestDriver } from "@/__tests__/drivers"
-import { TodoPeriodFromInput } from "../../../../components/formParts/period"
-import { render } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
-import { DayjsLocalizationProvider } from "@/providers"
-import dayjs from "dayjs"
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import dayjs from 'dayjs'
+
+import { DayjsLocalizationProvider } from '@/providers'
+import { FormTestDriver } from '@/__tests__/drivers'
+
+import { TodoPeriodFromInput } from '../../../../components/formParts/period'
 
 const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
   const screen = render(
     <DayjsLocalizationProvider>
-      <FormTestDriver defaultValues={{ test: dayjs(dayjs().format('YYYY/MM/DD')) }} onSubmitHandler={onSubmitHandlerMock || jest.fn()} spyOnError={spyOnError || jest.fn()}>
+      <FormTestDriver
+        defaultValues={{ test: dayjs(dayjs().format('YYYY/MM/DD')) }}
+        onSubmitHandler={onSubmitHandlerMock || jest.fn()}
+        spyOnError={spyOnError || jest.fn()}
+      >
         <TodoPeriodFromInput name="test" />
       </FormTestDriver>
     </DayjsLocalizationProvider>
@@ -51,7 +57,10 @@ describe('TodoPeriodFromInput', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { screen, dateFromInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
+      const { screen, dateFromInput, submitButton } = setup(
+        onSubmitHandlerMock,
+        spyOnError
+      )
 
       await userEvent.type(dateFromInput, '2')
       await userEvent.clear(dateFromInput)

@@ -1,6 +1,7 @@
+import { useCreateTodoMutation } from '../api'
+
 import { TodoInputForm, TodoInputTitle } from '.'
 import type { TodoInputFormInputs } from '.'
-import { useCreateTodoMutation } from '../api'
 
 function TodoInput() {
   const [createTodo] = useCreateTodoMutation()

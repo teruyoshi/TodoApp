@@ -1,9 +1,11 @@
 import { render } from '@testing-library/react'
-import { TodoPeriodInputs } from '../../components/formParts'
 import userEvent from '@testing-library/user-event'
+import dayjs from 'dayjs'
+
 import { DayjsLocalizationProvider } from '@/providers'
 import { FormTestDriver } from '@/__tests__/drivers'
-import dayjs from 'dayjs'
+
+import { TodoPeriodInputs } from '../../components/formParts'
 
 const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
   const screen = render(

@@ -1,8 +1,10 @@
 import { render } from '@testing-library/react'
-import { TodoInputForm } from '../../components'
 import userEvent from '@testing-library/user-event'
-import { DayjsLocalizationProvider } from '@/providers'
 import dayjs from 'dayjs'
+
+import { DayjsLocalizationProvider } from '@/providers'
+
+import { TodoInputForm } from '../../components'
 
 const setup = (onSubmitHandlerMock?: jest.Func) => {
   const onSubmitHandler = onSubmitHandlerMock || jest.fn()
@@ -56,12 +58,7 @@ describe('TodoInputForm', () => {
   })
 
   it('各フォームパーツの初期値が意図通りに設定されている', async () => {
-    const {
-      titleInput,
-      descriptionInput,
-      dateFromInput,
-      dateToInput,
-    } = setup()
+    const { titleInput, descriptionInput, dateFromInput, dateToInput } = setup()
 
     expect(titleInput).toHaveValue('')
     expect(descriptionInput).toHaveValue('')

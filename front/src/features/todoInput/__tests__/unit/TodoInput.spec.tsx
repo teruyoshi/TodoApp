@@ -1,4 +1,5 @@
 import { cleanup, render } from '@testing-library/react'
+
 import { TodoInput } from '../../components'
 
 const spyOnProps = jest.fn()
@@ -17,9 +18,7 @@ jest.mock('../../components/TodoInputForm', () => ({
 }))
 
 const setup = () => {
-  const screen = render(
-    <TodoInput />
-  )
+  const screen = render(<TodoInput />)
 
   return {
     ...screen,

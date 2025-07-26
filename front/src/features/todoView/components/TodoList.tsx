@@ -1,5 +1,6 @@
-import { TodoListTitle, ListedTodos } from '.'
 import { useFetchTodosQuery } from '../api/todoListApi'
+
+import { TodoListTitle, ListedTodos } from '.'
 
 interface Todo {
   id: number

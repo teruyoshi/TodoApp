@@ -1,11 +1,17 @@
-import { FormTestDriver } from "@/__tests__/drivers"
-import { TodoDescriptionTextField } from "../../../components/formParts"
-import { render } from "@testing-library/react"
-import userEvent from "@testing-library/user-event"
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { FormTestDriver } from '@/__tests__/drivers'
+
+import { TodoDescriptionTextField } from '../../../components/formParts'
 
 const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
   const screen = render(
-    <FormTestDriver defaultValues={{ test: '' }} onSubmitHandler={onSubmitHandlerMock || jest.fn()} spyOnError={spyOnError || jest.fn()}>
+    <FormTestDriver
+      defaultValues={{ test: '' }}
+      onSubmitHandler={onSubmitHandlerMock || jest.fn()}
+      spyOnError={spyOnError || jest.fn()}
+    >
       <TodoDescriptionTextField name="test" />
     </FormTestDriver>
   )
@@ -47,7 +53,10 @@ describe('TodoDescriptionTextField', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { screen, descriptionInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
+      const { screen, descriptionInput, submitButton } = setup(
+        onSubmitHandlerMock,
+        spyOnError
+      )
 
       await userEvent.type(descriptionInput, 'a')
       await userEvent.clear(descriptionInput)
@@ -80,7 +89,10 @@ describe('TodoDescriptionTextField', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { screen, descriptionInput, submitButton } = setup(onSubmitHandlerMock, spyOnError)
+      const { screen, descriptionInput, submitButton } = setup(
+        onSubmitHandlerMock,
+        spyOnError
+      )
 
       let textLength201 = ''
       for (let i = 0; i < 201; i++) {
@@ -105,7 +117,9 @@ describe('TodoDescriptionTextField', () => {
 
     it('エラーメッセージが表示される', async () => {
       const { getByText } = await overTextOperationSetup()
-      expect(getByText('説明は200文字以内で入力してください')).toBeInTheDocument()
+      expect(
+        getByText('説明は200文字以内で入力してください')
+      ).toBeInTheDocument()
     })
 
     it('フォームが送信出来ない', async () => {

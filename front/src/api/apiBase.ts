@@ -3,12 +3,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 const isDocker =
-  window.location.hostname === 'front' || window.location.hostname === 'go';
+  window.location.hostname === 'front' || window.location.hostname === 'go'
 
-const API_BASE_URL = isDocker
-  ? 'http://go:8080'
-  : 'http://localhost:8080';
-
+const API_BASE_URL = isDocker ? 'http://go:8080' : 'http://localhost:8080'
 
 export const api = createApi({
   reducerPath: 'api',

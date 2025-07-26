@@ -1,6 +1,8 @@
 import { ListItem, ListItemText } from '@mui/material'
-import { Todo } from '.'
+
 import { TodoTitle } from './parts'
+
+import { Todo } from '.'
 
 interface TodoLineProps {
   todo: Todo

@@ -1,4 +1,5 @@
 import { api } from '@/api'
+
 import type { Todos } from '../components'
 
 export const todoListApi = api.injectEndpoints({

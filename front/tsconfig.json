@@ -25,6 +25,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "tests", "playwright.config.ts"],
+  "include": ["src", ".storybook"],
   "exclude": ["node_modules", "dist", "build"]
 }

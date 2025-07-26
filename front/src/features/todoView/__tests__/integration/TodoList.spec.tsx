@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react'
-import { TodoList } from '../../components'
+
 import { ReduxProvider } from '@/providers'
+
+import { TodoList } from '../../components'
 
 jest.mock('../../api/todoListApi', () => ({
   useFetchTodosQuery: jest.fn(() => ({
