@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import { ReduxProvider } from '@/providers'
 
@@ -20,11 +20,7 @@ const setup = () => {
       <TodoList />
     </ReduxProvider>
   )
-  const screen = render(Component)
-
-  return {
-    ...screen,
-  }
+  render(Component)
 }
 
 const expectObjectFactory = (title: string, description: string) => {
@@ -42,24 +38,24 @@ const expectObjects = [
 
 describe('TodoList', () => {
   it('タイトルが表示されている', () => {
-    const { getByText } = setup()
+    setup()
 
-    expect(getByText('TODOリスト')).toBeInTheDocument()
+    expect(screen.getByText('TODOリスト')).toBeInTheDocument()
   })
   describe('TODO が表示されている', () => {
     it('TODOタイトルが表示されている', () => {
-      const { getByText } = setup()
+      setup()
 
       expectObjects.forEach((expectObject) => {
-        expect(getByText(expectObject.title)).toBeInTheDocument()
+        expect(screen.getByText(expectObject.title)).toBeInTheDocument()
       })
     })
 
     it('TODO の説明が表示されている', () => {
-      const { getByText } = setup()
+      setup()
 
       expectObjects.forEach((expectObject) => {
-        expect(getByText(expectObject.description)).toBeInTheDocument()
+        expect(screen.getByText(expectObject.description)).toBeInTheDocument()
       })
     })
   })

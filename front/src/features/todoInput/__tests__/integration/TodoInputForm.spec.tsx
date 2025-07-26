@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import dayjs from 'dayjs'
 
@@ -8,19 +8,17 @@ import { TodoInputForm } from '../../components'
 
 const setup = (onSubmitHandlerMock?: jest.Func) => {
   const onSubmitHandler = onSubmitHandlerMock || jest.fn()
-  const screen = render(
+  render(
     <DayjsLocalizationProvider>
       <TodoInputForm onSubmitHandler={onSubmitHandler} />
     </DayjsLocalizationProvider>
   )
 
-  const { getByLabelText, getByRole } = screen
-
-  const titleInput = getByLabelText('タイトル')
-  const descriptionInput = getByLabelText('説明')
-  const dateFromInput = getByLabelText('開始日')
-  const dateToInput = getByLabelText('終了日')
-  const submitButton = getByRole('button', { name: '追加' })
+  const titleInput = screen.getByLabelText('タイトル')
+  const descriptionInput = screen.getByLabelText('説明')
+  const dateFromInput = screen.getByLabelText('開始日')
+  const dateToInput = screen.getByLabelText('終了日')
+  const submitButton = screen.getByRole('button', { name: '追加' })
 
   return {
     titleInput,
