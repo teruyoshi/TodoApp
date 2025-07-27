@@ -149,7 +149,7 @@ jobs:
       #   run: make e2e-test
       
       - name: Go Container Debug Log 2
-        run: docker compose -f compose.ci.yaml logs go
+        run: make go
 
       - name: Docker Compose Down
         if: always()
