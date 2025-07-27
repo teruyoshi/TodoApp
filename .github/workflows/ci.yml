@@ -59,9 +59,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache-todo
-          key: ${{ runner.os }}-buildx-todo-${{ hashFiles('**/Dockerfile') }}
+          key: v1-${{ runner.os }}-buildx-todo-${{ hashFiles('**/Dockerfile') }}
           restore-keys: |
-            ${{ runner.os }}-buildx-todo-
+            v1-${{ runner.os }}-buildx-todo-
 
       - name: build front image
         uses: docker/build-push-action@v6
