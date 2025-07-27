@@ -55,44 +55,44 @@ jobs:
             ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
-      - name: Cache Docker layers
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache-todo
-          key: ${{ runner.os }}-buildx-todo-${{ hashFiles('**/Dockerfile') }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-todo-
+      # - name: Cache Docker layers
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: /tmp/.buildx-cache-todo
+      #     key: ${{ runner.os }}-buildx-todo-${{ hashFiles('**/Dockerfile') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-buildx-todo-
 
-      - name: build front image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/front/Dockerfile
-          push: false
-          cache-from: type=gha,src=/tmp/.buildx-cache-todo
-          cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
+      # - name: build front image
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     file: docker/front/Dockerfile
+      #     push: false
+      #     cache-from: type=gha,src=/tmp/.buildx-cache-todo
+      #     cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
 
-      - name: build go image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/go_ci/Dockerfile
-          target: build
-          push: false
-          cache-from: type=gha,src=/tmp/.buildx-cache-todo
-          cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
+      # - name: build go image
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     file: docker/go_ci/Dockerfile
+      #     target: build
+      #     push: false
+      #     cache-from: type=gha,src=/tmp/.buildx-cache-todo
+      #     cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
 
-      - name: build e2e image
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          file: docker/e2e/Dockerfile
-          push: false
-          cache-from: type=gha,src=/tmp/.buildx-cache-todo
-          cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
+      # - name: build e2e image
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     file: docker/e2e/Dockerfile
+      #     push: false
+      #     cache-from: type=gha,src=/tmp/.buildx-cache-todo
+      #     cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
     
-      # - name: Docker Compose Build No Cache
-      #   run: make rebuild
+      - name: Docker Compose Build No Cache
+        run: make rebuild
 
       - name: Wait for starting
         run: make up-wait
