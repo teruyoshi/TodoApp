@@ -10,6 +10,8 @@ RUN go mod download
 # ソースコードをコピー
 COPY ./go .
 
+RUN mkdir -p app
+
 # ビルド（main.go をエントリーポイントにしている場合）
 RUN go build -o app/ cmd/todo_app/main.go
 
@@ -18,13 +20,13 @@ FROM alpine:3.21
 
 WORKDIR /root/
 
-RUN apk add --no-cache curl
-
 # ビルドしたバイナリだけをコピー
-COPY --from=build /app/app ./app
+COPY --from=build /app/app ./
+
+RUN apk add curl
 
 # 必要に応じてポートを指定（例：8080）
 EXPOSE 8080
 
 # エントリーポイント
-CMD ["./app"]
+CMD ["./main"]
