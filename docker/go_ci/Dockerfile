@@ -7,25 +7,18 @@ WORKDIR /app
 COPY ./go/go.mod ./go/go.sum ./
 RUN go mod download
 
+RUN apk add curl
+RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
 # ソースコードをコピー
 COPY ./go .
 
 RUN mkdir -p app
 
-# ビルド（main.go をエントリーポイントにしている場合）
+# ビルド
 RUN go build -o app/ cmd/todo_app/main.go
 
-# # 実行ステージ
-# FROM alpine:3.21
-
-# WORKDIR /root/
-
-# # ビルドしたバイナリだけをコピー
-# COPY --from=build /app/app ./
-
-RUN apk add curl
-
-# 必要に応じてポートを指定（例：8080）
+# ポートを指定
 EXPOSE 8080
 
 # エントリーポイント
