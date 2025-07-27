@@ -7,4 +7,4 @@ COPY ./e2e/ /app/
 RUN npm install --force
 RUN npx playwright install
 
-CMD ["tail", "-f", "dev/null"]
+CMD ["tail", "-f", "/dev/null"]
