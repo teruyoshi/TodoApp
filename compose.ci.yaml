@@ -7,11 +7,11 @@ services:
       - "9323:9323"
     networks:
       - e2e_test_network
-    # depends_on:
-    #   go:
-    #     condition: service_healthy
-    #   front:
-    #     condition: service_healthy
+    depends_on:
+      go:
+        condition: service_healthy
+      front:
+        condition: service_healthy
     hostname: e2e
     volumes:
       - ./e2e/playwright-report:/app/playwright-report
@@ -27,9 +27,9 @@ services:
     ports:
       - "5173:5173"
       - "6006:6006"
-    # depends_on:
-    #   go:
-    #     condition: service_healthy
+    depends_on:
+      go:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "http://localhost:5173/todo"]
       interval: 5s
@@ -51,17 +51,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    # healthcheck:
-    #   test: ["CMD", "curl", "http://localhost:8080/api/v1/test"]
-    #   interval: 5s
-    #   timeout: 60s
-    #   retries: 15
-    #   start_period: 10s
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:8080/api/v1/test"]
+      interval: 5s
+      timeout: 60s
+      retries: 15
+      start_period: 10s
     networks:
       - db_network
       - e2e_test_network
-    # volumes:
-    #   - ./go:/home/go/src/app
     tty: "true"
 
   db:

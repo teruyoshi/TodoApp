@@ -2,13 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
@@ -20,12 +18,6 @@ import (
 
 func main() {
 	fmt.Println("Starting Todo App...")
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	fmt.Println("Completed loading .env file")
 
 	router := chi.NewRouter()
 
@@ -48,8 +40,6 @@ func main() {
 		os.Getenv("DATABASE_PORT"),
 		os.Getenv("DATABASE_DBNAME"),
 	)
-
-	fmt.Printf("dsn: %s\n", dsn)
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
