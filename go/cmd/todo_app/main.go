@@ -57,7 +57,12 @@ func main() {
 	router.Route("/api/v1", func(r chi.Router) {
 		r.Get("/test", func(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusOK)
-			w.Write([]byte("Hello World\n"))
+			_, err = w.Write([]byte("Hello World\n"))
+			if err != nil {
+				http.Error(w, "Failed to write response", http.StatusInternalServerError)
+				return
+			}
+			fmt.Println("Test endpoint hit")
 		})
 
 		routerPkg.RegisterTodoRoutes(r, handler)
