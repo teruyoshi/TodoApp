@@ -21,7 +21,7 @@ WORKDIR /root/
 RUN apk add --no-cache curl
 
 # ビルドしたバイナリだけをコピー
-COPY --from=build /app/app .
+COPY --from=build /app/app ./app
 
 # 必要に応じてポートを指定（例：8080）
 EXPOSE 8080
