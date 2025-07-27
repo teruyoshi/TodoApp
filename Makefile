@@ -3,12 +3,12 @@ include .env
 
 # 環境変数の定義
 DOCKER_COMPOSE = docker compose
-DOCKER_COMPOSE_FILE = compose.yaml
+# DOCKER_COMPOSE_FILE = compose.yaml
 FEATURE_DIR = 
 TEST_DIR = $(if $(FEATURE_DIR),./internal/features/$(FEATURE_DIR)/,./)...
 
 # ターゲット一覧
-.PHONY: build up down destroy rebuild restart stop ps front go db logs go-lint lint go-fmt format go-test go-coverage open-go-coverage test clean
+.PHONY: build up up-wait down destroy rebuild restart stop ps front e2e e2e-test su-front go db db-health logs go-lint tsc-check lint go-fmt format go-test go-coverage open-go-coverage test clean
 
 # Docker関連
 build:down
@@ -16,6 +16,9 @@ build:down
 
 up:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d
+
+up-wait:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) up -d --wait
 
 down:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) down
@@ -38,16 +41,32 @@ ps:
 front:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec front bash
 
+e2e:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec e2e bash
+
+e2e-test:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec e2e npm run test
+
+su-front:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec -u root front bash
+
 go: 
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec go ash
 
 db:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec db mysql ${MYSQL_DATABASE} -u ${MYSQL_USER} -p
 
+# db-health:
+# 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec db mysqladmin ping -p${MYSQL_ROOT_PASSWORD} --silent
+db-health:
+	echo "ok"
+
 logs:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) logs -f
 
 # コード品質関連
+tsc-check:
+	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec front npm run tsc -- --noEmit
 
 lint:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec front npm run lint

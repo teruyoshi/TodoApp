@@ -1,5 +1,6 @@
 import { MemoryRouter } from 'react-router'
 import { render } from '@testing-library/react'
+
 import { MyRoutes } from '@/routes'
 import { ReduxProvider, DayjsLocalizationProvider } from '@/providers'
 
@@ -13,12 +14,12 @@ function setup() {
       </DayjsLocalizationProvider>
     </ReduxProvider>
   )
-  const screen = render(Component)
-  return { ...screen }
+  const view = render(Component)
+  return { ...view }
 }
 
 describe('ルーティングのテスト', () => {
-  it('「/todo」にアクセスすると TODO リストページが表示される ', () => {
+  it('「/todo」にアクセスすると TODO リストページが表示される', () => {
     const { getByText } = setup()
     expect(getByText('TODOリスト')).toBeInTheDocument()
   })

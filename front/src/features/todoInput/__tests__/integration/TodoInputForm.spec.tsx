@@ -1,24 +1,24 @@
-import { render } from '@testing-library/react'
-import { TodoInputForm } from '../../components'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { DayjsLocalizationProvider } from '@/providers'
 import dayjs from 'dayjs'
+
+import { DayjsLocalizationProvider } from '@/providers'
+
+import { TodoInputForm } from '../../components'
 
 const setup = (onSubmitHandlerMock?: jest.Func) => {
   const onSubmitHandler = onSubmitHandlerMock || jest.fn()
-  const screen = render(
+  render(
     <DayjsLocalizationProvider>
       <TodoInputForm onSubmitHandler={onSubmitHandler} />
     </DayjsLocalizationProvider>
   )
 
-  const { getByLabelText, getByRole } = screen
-
-  const titleInput = getByLabelText('タイトル')
-  const descriptionInput = getByLabelText('説明')
-  const dateFromInput = getByLabelText('開始日')
-  const dateToInput = getByLabelText('終了日')
-  const submitButton = getByRole('button', { name: '追加' })
+  const titleInput = screen.getByLabelText('タイトル')
+  const descriptionInput = screen.getByLabelText('説明')
+  const dateFromInput = screen.getByLabelText('開始日')
+  const dateToInput = screen.getByLabelText('終了日')
+  const submitButton = screen.getByRole('button', { name: '追加' })
 
   return {
     titleInput,
@@ -56,12 +56,7 @@ describe('TodoInputForm', () => {
   })
 
   it('各フォームパーツの初期値が意図通りに設定されている', async () => {
-    const {
-      titleInput,
-      descriptionInput,
-      dateFromInput,
-      dateToInput,
-    } = setup()
+    const { titleInput, descriptionInput, dateFromInput, dateToInput } = setup()
 
     expect(titleInput).toHaveValue('')
     expect(descriptionInput).toHaveValue('')

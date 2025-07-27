@@ -1,7 +1,7 @@
 # ビルドステージ
 FROM golang:1.24-alpine3.21 AS builder
 
-RUN apk add --no-cache git shadow && \
+RUN apk add --no-cache git shadow curl && \
   apk add --no-cache gcc musl-dev
 
 RUN groupadd -g 1000 go && \
@@ -9,9 +9,10 @@ RUN groupadd -g 1000 go && \
 
 USER go
 
-RUN mkdir -p ~/src/app
-
 WORKDIR /home/go/src/app
+
+RUN mkdir -p /home/go/src/app && chown -R go:go /home/go/src/app
+
 ENV CGO_ENABLED=1
 
 RUN go install github.com/air-verse/air@latest

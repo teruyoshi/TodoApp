@@ -5,9 +5,6 @@ import (
 	repo "github.com/teruyoshi/todoApp/internal/features/todos/repository"
 )
 
-// TodoCreator represents an interactor capable of creating todos.
-// It allows handlers to depend on behavior instead of a concrete
-// implementation which improves testability.
 type TodoCreator interface {
 	Execute(entity.Todo) (entity.Todo, error)
 }

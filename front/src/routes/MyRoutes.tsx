@@ -1,5 +1,6 @@
-import TodoApp from '../pages/TodoApp'
 import { Route, Routes } from 'react-router'
+
+import TodoApp from '../pages/TodoApp'
 
 function MyRoutes() {
   return (

@@ -1,9 +1,11 @@
 import { Box, FormControl, FormHelperText } from '@mui/material'
-import { TodoPeriodFromInput, TodoPeriodToInput } from './period'
 import { useFormContext } from 'react-hook-form'
 import { useEffect } from 'react'
+
 import { HorizontalBottomAlignmentBox } from '@/components'
 import { fitContentHorizontalSx } from '@/styles'
+
+import { TodoPeriodFromInput, TodoPeriodToInput } from './period'
 
 interface TodoPeriodInputsProps {
   name: string
@@ -34,7 +36,7 @@ function TodoPeriodInputs(props: TodoPeriodInputsProps) {
     } else {
       clearErrors(name)
     }
-  }, [from, to, setError, clearErrors])
+  }, [from, to, setError, clearErrors, name])
 
   return (
     <>

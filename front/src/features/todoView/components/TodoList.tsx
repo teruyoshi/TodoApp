@@ -1,5 +1,25 @@
+import { useFetchTodosQuery } from '../api/todoListApi'
+
+import { TodoListTitle, ListedTodos } from '.'
+
+interface Todo {
+  id: number
+  todoTitle: string
+  todoDescription: string
+}
+
+type Todos = Todo[]
+
 function TodoList() {
-  return <>TODOリスト</>
+  const { data } = useFetchTodosQuery()
+
+  return (
+    <>
+      <TodoListTitle />
+      {data && <ListedTodos>{data}</ListedTodos>}
+    </>
+  )
 }
 
 export default TodoList
+export type { Todo, Todos }

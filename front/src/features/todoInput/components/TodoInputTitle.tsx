@@ -1,7 +1,7 @@
-import { Typography } from '@mui/material'
+import { SubTitleTypography } from '@/components'
 
 function TodoInputTitle() {
-  return <Typography variant="h5">Todoを追加</Typography>
+  return <SubTitleTypography>Todoを追加</SubTitleTypography>
 }
 
 export default TodoInputTitle

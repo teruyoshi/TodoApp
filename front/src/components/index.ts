@@ -2,3 +2,4 @@ export { default as HorizontalBottomAlignmentBox } from './HorizontalBottomAlign
 export { default as StandardDatePicker } from './StandardDatePicker'
 export { default as LeftMarginIndentBox } from './LeftMarginIndentBox'
 export { default as VerticalBox } from './VerticalBox'
+export { default as SubTitleTypography } from './SubTitleTypography'

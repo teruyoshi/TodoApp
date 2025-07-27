@@ -1,14 +1,20 @@
-import { render } from '@testing-library/react'
-import { TodoPeriodInputs } from '../../components/formParts'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { DayjsLocalizationProvider } from '@/providers'
-import { FormTestDriver } from '@/__tests__/drivers'
 import dayjs from 'dayjs'
 
+import { DayjsLocalizationProvider } from '@/providers'
+import { FormTestDriver } from '@/__tests__/drivers'
+
+import { TodoPeriodInputs } from '../../components/formParts'
+
 const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
-  const screen = render(
+  render(
     <DayjsLocalizationProvider>
-      <FormTestDriver
+      <FormTestDriver<{
+        test: string
+        testFrom: dayjs.Dayjs
+        testTo: dayjs.Dayjs
+      }>
         defaultValues={{
           test: '',
           testFrom: dayjs(dayjs().format('YYYY/MM/DD')),
@@ -22,13 +28,11 @@ const setup = (onSubmitHandlerMock?: jest.Func, spyOnError?: jest.Func) => {
     </DayjsLocalizationProvider>
   )
 
-  const { getByLabelText, getByRole } = screen
-  const fromInput = getByLabelText('開始日')
-  const toInput = getByLabelText('終了日')
-  const submitButton = getByRole('button', { name: '送信' })
+  const fromInput = screen.getByLabelText('開始日')
+  const toInput = screen.getByLabelText('終了日')
+  const submitButton = screen.getByRole('button', { name: '送信' })
 
   return {
-    ...screen,
     fromInput,
     toInput,
     submitButton,
@@ -63,7 +67,7 @@ describe('TodoPeriodInputs', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { fromInput, toInput, submitButton, getByText } = setup(
+      const { fromInput, toInput, submitButton } = setup(
         onSubmitHandlerMock,
         spyOnError
       )
@@ -72,7 +76,7 @@ describe('TodoPeriodInputs', () => {
       await userEvent.type(toInput, '20250101')
       await userEvent.click(submitButton)
 
-      return { onSubmitHandlerMock, spyOnError, getByText }
+      return { onSubmitHandlerMock, spyOnError }
     }
 
     it('フォームにエラーが発生する', async () => {
@@ -84,9 +88,9 @@ describe('TodoPeriodInputs', () => {
     })
 
     it('エラーメッセージが表示される', async () => {
-      const { getByText } = await fromIsAfterToWhenEnterToSetup()
+      await fromIsAfterToWhenEnterToSetup()
       expect(
-        getByText('終了日は開始日以前の日付にしてください')
+        screen.getByText('終了日は開始日以前の日付にしてください')
       ).toBeInTheDocument()
     })
 
@@ -101,7 +105,7 @@ describe('TodoPeriodInputs', () => {
       const onSubmitHandlerMock = jest.fn()
       const spyOnError = jest.fn()
 
-      const { fromInput, toInput, submitButton, getByText } = setup(
+      const { fromInput, toInput, submitButton } = setup(
         onSubmitHandlerMock,
         spyOnError
       )
@@ -110,7 +114,7 @@ describe('TodoPeriodInputs', () => {
       await userEvent.type(fromInput, '20250102')
       await userEvent.click(submitButton)
 
-      return { onSubmitHandlerMock, spyOnError, getByText }
+      return { onSubmitHandlerMock, spyOnError }
     }
 
     it('フォームにエラーが発生する', async () => {
@@ -122,9 +126,9 @@ describe('TodoPeriodInputs', () => {
     })
 
     it('エラーメッセージが表示される', async () => {
-      const { getByText } = await fromIsAfterToWhenEnterToSetup()
+      await fromIsAfterToWhenEnterToSetup()
       expect(
-        getByText('終了日は開始日以前の日付にしてください')
+        screen.getByText('終了日は開始日以前の日付にしてください')
       ).toBeInTheDocument()
     })
 

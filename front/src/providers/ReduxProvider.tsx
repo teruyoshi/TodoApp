@@ -1,6 +1,7 @@
 import React from 'react'
 import 'dayjs/locale/ja'
 import { Provider } from 'react-redux'
+
 import { store } from '@/store'
 
 interface ReduxProviderProps {

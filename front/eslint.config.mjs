@@ -1,31 +1,36 @@
-import js from '@eslint/js'
+// For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
+import storybook from 'eslint-plugin-storybook';
 
-import tsParser from '@typescript-eslint/parser'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
-import react from 'eslint-plugin-react'
-import reactHooks from 'eslint-plugin-react-hooks'
-import jsxA11y from 'eslint-plugin-jsx-a11y'
-import _import from 'eslint-plugin-import'
-import jest from 'eslint-plugin-jest'
-import prettier from 'eslint-plugin-prettier'
-import prettierConfig from 'eslint-config-prettier'
-import globals from 'globals'
+import js from '@eslint/js';
+
+import tsParser from '@typescript-eslint/parser';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import react from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import jsxA11y from 'eslint-plugin-jsx-a11y';
+import _import from 'eslint-plugin-import';
+import jest from 'eslint-plugin-jest';
+import testingLibrary from 'eslint-plugin-testing-library';
+import prettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
+import globals from 'globals';
 
 export default [
   {
-    ignores: ['node_modules', 'dist', 'build', 'vite.config.ts']
+    ignores: ['node_modules', 'dist', 'build', 'vite.config.ts'],
   },
   {
     name: 'my/javascript',
     files: ['**/*.{js,jsx}'],
     languageOptions: {
-      ecmaVersion: 'es2022', 
-      sourceType: 'module', 
+      ecmaVersion: 2022,
+      sourceType: 'module',
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.es2022
-      }
+        ...globals.es2022,
+      },
     },
     plugins: {
       react,
@@ -34,11 +39,11 @@ export default [
       'jsx-a11y': jsxA11y,
       import: _import,
       prettier,
-    }, 
+    },
     settings: {
       react: {
-        version: 'detect'
-      }
+        version: 'detect',
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -62,30 +67,31 @@ export default [
             'internal',
             'parent',
             'sibling',
-            'index'
+            'index',
           ],
-          'newlines-between': 'always'
-        }
-      ]
-    }
+          'newlines-between': 'always',
+        },
+      ],
+    },
   },
   {
-    name: "my/typescript",
+    name: 'my/typescript',
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        projectService: true,
-        ecmaVersion: 'es2022',
+        ecmaVersion: 2022,
+        sourceType: 'module',
+        project: ['./tsconfig.eslint.json'], // ← ESLint用tsconfigを指定！
+        tsconfigRootDir: process.cwd(),
         extraFileExtensions: ['.ts', '.tsx'],
-        jsDocParsingMode: 'none',
-        tsconfigRootDir: './'
+        // jsDocParsingMode: 'none', // ← 必要なければコメントアウト可
       },
       globals: {
         ...globals.browser,
         ...globals.node,
-        ...globals.es2022
-      }
+        ...globals.es2022,
+      },
     },
     plugins: {
       '@typescript-eslint': typescriptEslint,
@@ -94,16 +100,19 @@ export default [
       'react-refresh': reactRefresh,
       'jsx-a11y': jsxA11y,
       import: _import,
-      prettier
+      prettier,
     },
     settings: {
       react: {
-        version: 'detect'
+        version: 'detect',
       },
       'import/resolver': {
-        typescript: true,
-        node: true
-      }
+        typescript: {
+          alwaysTryTypes: true,
+          project: ['./tsconfig.eslint.json'],
+        },
+        node: true,
+      },
     },
     rules: {
       ...js.configs.recommended.rules,
@@ -129,31 +138,32 @@ export default [
             'internal',
             'parent',
             'sibling',
-            'index'
+            'index',
           ],
-          'newlines-between': 'always'
-        }
-      ]
-    }
+          'newlines-between': 'always',
+        },
+      ],
+    },
   },
   {
     files: ['**/*.test.{js,jsx,ts,tsx}', '**/__tests__/**/*.{js,jsx,ts,tsx}'],
     plugins: {
       jest,
-      'testing-library': testingLibrary
+      'testing-library': testingLibrary,
     },
     rules: {
       ...jest.configs.recommended.rules,
-      ...testingLibrary.configs.react.rules
+      ...testingLibrary.configs.react.rules,
     },
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ['tsconfig.test.json']
+        project: ['./tsconfig.eslint.json'],
       },
       globals: {
-        ...globals.jest
-      }
-    }
-  }
-]
+        ...globals.jest,
+      },
+    },
+  },
+  ...storybook.configs['flat/recommended'],
+];

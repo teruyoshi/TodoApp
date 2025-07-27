@@ -17,13 +17,15 @@ func (m *MockTodoCreator) Execute(t entity.Todo) (entity.Todo, error) {
 	return m.ExecuteFunc(t)
 }
 
-// MockTodoCreateHandler is a mock of TodoCreateHandler for testing.
-// It allows you to control the behavior of the Create method.
-type MockTodoCreateHandler struct {
+type MockTodoHandler struct {
 	CreateFunc func(w http.ResponseWriter, r *http.Request)
+	FetchFunc  func(w http.ResponseWriter, r *http.Request)
 }
 
-// Create calls the underlying CreateFunc.
-func (m *MockTodoCreateHandler) Create(w http.ResponseWriter, r *http.Request) {
+func (m *MockTodoHandler) Create(w http.ResponseWriter, r *http.Request) {
 	m.CreateFunc(w, r)
+}
+
+func (m *MockTodoHandler) Fetch(w http.ResponseWriter, r *http.Request) {
+	m.FetchFunc(w, r)
 }

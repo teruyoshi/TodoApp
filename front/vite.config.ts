@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: true,
+    allowedHosts: ['localhost', '.localhost', 'front'],
   },
   resolve: {
     alias: {

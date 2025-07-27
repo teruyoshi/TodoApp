@@ -1,6 +1,8 @@
+import { Typography } from '@mui/material'
+
 import { LeftMarginIndentBox } from '@/components'
 import { TodoInput } from '@/features/todoInput'
-import { Typography } from '@mui/material'
+import { TodoList } from '@/features/todoView'
 
 function TodoApp() {
   return (
@@ -10,7 +12,7 @@ function TodoApp() {
         <TodoInput />
       </LeftMarginIndentBox>
       <LeftMarginIndentBox level={1}>
-        <Typography variant="h5">TODOリスト</Typography>
+        <TodoList />
       </LeftMarginIndentBox>
     </>
   )
