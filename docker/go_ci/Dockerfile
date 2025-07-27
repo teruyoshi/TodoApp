@@ -18,6 +18,8 @@ FROM alpine:3.21
 
 WORKDIR /root/
 
+RUN apk add --no-cache curl
+
 # ビルドしたバイナリだけをコピー
 COPY --from=build /app/app .
 
