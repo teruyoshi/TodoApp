@@ -154,6 +154,10 @@ jobs:
       - name: Go Container Debug Log 2
         run: docker compose -f compose.ci.yaml logs go
 
+      - name: Output All Container Logs
+        if: always()
+        run: docker compose -f compose.ci.yaml logs --no-color
+
       - name: Docker Compose Down
         if: always()
         run: make down
