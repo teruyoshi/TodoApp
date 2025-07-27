@@ -61,8 +61,8 @@ services:
     networks:
       - db_network
       - e2e_test_network
-    volumes:
-      - ./go:/home/go/src/app
+    # volumes:
+    #   - ./go:/home/go/src/app
     tty: "true"
 
   db:
