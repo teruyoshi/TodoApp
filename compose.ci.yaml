@@ -72,8 +72,8 @@ services:
       LANG: ja_JP.UTF-8
       LANGUAGE: ja_JP:ja
       LC_ALL: ja_JP.UTF-8
-    volumes:
-      - db_data:/var/lib/mysql
+    # volumes:
+    #   - db_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
       interval: 5s
@@ -85,9 +85,9 @@ services:
     networks:
       - db_network
 
-volumes:
-  db_data:
-    name: todo-app
+# volumes:
+#   db_data:
+#     name: todo-app
 
 networks:
   db_network:
