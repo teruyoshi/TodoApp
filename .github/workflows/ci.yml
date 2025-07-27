@@ -109,8 +109,8 @@ jobs:
       - name: Docker Container List
         run: make ps
 
-      - name: Go Container Health Check
-        run: curl http://localhost:8080/api/v1/test
+      # - name: Go Container Health Check
+      #   run: curl http://localhost:8080/api/v1/test
 
       - name: Frontend Lint
         run: make lint

@@ -19,10 +19,13 @@ import (
 )
 
 func main() {
+	fmt.Println("Starting Todo App...")
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	fmt.Println("Completed loading .env file")
 
 	router := chi.NewRouter()
 
@@ -35,6 +38,7 @@ func main() {
 		AllowCredentials: false,
 		MaxAge:           300, // キャッシュの有効期限
 	}))
+	fmt.Println("CORS middleware configured")
 
 	// 依存関係の構築
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
@@ -44,6 +48,9 @@ func main() {
 		os.Getenv("DATABASE_PORT"),
 		os.Getenv("DATABASE_DBNAME"),
 	)
+
+	fmt.Printf("dsn: %s\n", dsn)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
