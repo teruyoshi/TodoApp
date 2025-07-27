@@ -75,7 +75,7 @@ services:
     # volumes:
     #   - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      test: ["CMD", "mysql", "-uroot", "-p${MYSQL_ROOT_PASSWORD}", "-e", "USE ${MYSQL_DATABASE};"]
       interval: 5s
       timeout: 30s
       retries: 10
