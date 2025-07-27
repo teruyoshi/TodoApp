@@ -15,13 +15,13 @@ RUN mkdir -p app
 # ビルド（main.go をエントリーポイントにしている場合）
 RUN go build -o app/ cmd/todo_app/main.go
 
-# 実行ステージ
-FROM alpine:3.21
+# # 実行ステージ
+# FROM alpine:3.21
 
-WORKDIR /root/
+# WORKDIR /root/
 
-# ビルドしたバイナリだけをコピー
-COPY --from=build /app/app ./
+# # ビルドしたバイナリだけをコピー
+# COPY --from=build /app/app ./
 
 RUN apk add curl
 
@@ -29,4 +29,4 @@ RUN apk add curl
 EXPOSE 8080
 
 # エントリーポイント
-CMD ["./main"]
+CMD ["./app/main"]
