@@ -1,7 +1,7 @@
 # ビルドステージ
 FROM golang:1.24-alpine3.21 AS builder
 
-RUN apk add --no-cache git shadow && \
+RUN apk add --no-cache git shadow curl && \
   apk add --no-cache gcc musl-dev
 
 RUN groupadd -g 1000 go && \

@@ -4,6 +4,7 @@ ENV NODE_ENV=development
 
 RUN apt-get update \
   && apt-get install -y --no-install-recommends tini \
+  && apt-get install -y --no-install-recommends curl \
   && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 5173

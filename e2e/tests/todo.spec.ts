@@ -19,7 +19,7 @@ test('/todo ページ TODO を追加して表示される', async ({ page }) => 
   await page.getByLabel('説明').fill('TODO の説明')
   await page.getByRole('button', { name: '追加' }).click()
 
-  await page.getByText('TODO のタイトル').waitFor()
+  await page.getByText('TODO のタイトル')
 
   await expect(page.locator('body')).toContainText('TODO のタイトル')
   await expect(page.locator('body')).toContainText('TODO の説明')

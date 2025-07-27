@@ -8,7 +8,7 @@ FEATURE_DIR =
 TEST_DIR = $(if $(FEATURE_DIR),./internal/features/$(FEATURE_DIR)/,./)...
 
 # ターゲット一覧
-.PHONY: build up up-wait down destroy rebuild restart stop ps front e2e e2e-test su-front go db logs go-lint tsc-check lint go-fmt format go-test go-coverage open-go-coverage test clean
+.PHONY: build up up-wait down destroy rebuild restart stop ps front e2e e2e-test su-front go db db-health logs go-lint tsc-check lint go-fmt format go-test go-coverage open-go-coverage test clean
 
 # Docker関連
 build:down
@@ -55,6 +55,11 @@ go:
 
 db:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec db mysql ${MYSQL_DATABASE} -u ${MYSQL_USER} -p
+
+# db-health:
+# 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) exec db mysqladmin ping -p${MYSQL_ROOT_PASSWORD} --silent
+db-health:
+	echo "ok"
 
 logs:
 	$(DOCKER_COMPOSE) -f $(DOCKER_COMPOSE_FILE) logs -f

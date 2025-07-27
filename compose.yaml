@@ -8,7 +8,10 @@ services:
     networks:
       - e2e_test_network
     depends_on:
-      - front
+      go:
+        condition: service_healthy
+      front:
+        condition: service_healthy
     hostname: e2e
     volumes:
       - ./e2e/playwright-report:/app/playwright-report
@@ -24,6 +27,15 @@ services:
     ports:
       - "5173:5173"
       - "6006:6006"
+    depends_on:
+      go:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:5173/todo"]
+      interval: 5s
+      timeout: 60s
+      retries: 15
+      start_period: 10s
     networks:
       - e2e_test_network
     volumes:
@@ -40,7 +52,14 @@ services:
     env_file:
       - ./go/.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "http://localhost:8080/api/v1/test"]
+      interval: 5s
+      timeout: 60s
+      retries: 15
+      start_period: 10s
     networks:
       - db_network
       - e2e_test_network
@@ -60,6 +79,12 @@ services:
       LC_ALL: ja_JP.UTF-8
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 30s
+      retries: 10
+      start_period: 10s
     ports:
       - "3306:3306"
     networks:
