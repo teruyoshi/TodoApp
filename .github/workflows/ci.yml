@@ -1,15 +1,12 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
 
 jobs:
-  build-and-test:
+  e2e-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -59,7 +56,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache-todo
-          key: ${{ runner.os }}-buildx-todo-${{ hashFiles('**/Dockerfile') }}
+          key: ${{ runner.os }}-buildx-todo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-todo-
 
@@ -67,7 +64,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/front/Dockerfile
+          file: docker/front_ci/Dockerfile
           push: false
           cache-from: type=gha,src=/tmp/.buildx-cache-todo
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
@@ -112,27 +109,6 @@ jobs:
       - name: Docker Container List
         run: make ps
 
-      - name: Frontend Lint
-        run: make lint
-
-      - name: Frontend TypeScript Check
-        run: make tsc-check
-
-      - name: Frontend Format
-        run: make format
-
-      - name: Frontend Test
-        run: make test
-
-      - name: Go Lint
-        run: make go-lint
-
-      - name: Go Format
-        run: make go-fmt
-
-      - name: Go Test
-        run: make go-test
-
       - name: E2E Test (Playwright)
         run: make e2e-test
 
@@ -143,3 +119,44 @@ jobs:
       - name: Docker Compose Down
         if: always()
         run: make down
+
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: front/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('front/package-lock.json') }}
+      - run: cd front && npm ci
+      - run: cd front && npm run format
+      - run: cd front && npm run lint
+      - run: cd front && npm run tsc
+      - run: cd front && npm run test
+
+  go-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Cache Go go_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+      - run: cd go && go mod download
+      - run: cd go && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - run: cd go && golangci-lint run
+      - run: cd go && go fmt ./...
+      - run: cd go && go test ./...

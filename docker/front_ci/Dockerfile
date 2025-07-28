@@ -1,0 +1,25 @@
+FROM node:22.14-slim
+
+ENV NODE_ENV=development
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends tini \
+  && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 5173
+
+WORKDIR /home/node/app/front
+
+RUN mkdir -p /home/node/app/front && chown -R node:node /home/node/app/front
+
+USER node
+
+# 依存関係のキャッシュ活用
+COPY --chown=node:node ./front/package*.json ./
+RUN npm ci
+
+COPY --chown=node:node ./front ./
+
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["npm", "run", "dev"]

@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: docker/e2e/Dockerfile
+    environment:
+      - API_BASE_URL=http://front:5173
     ports:
       - "9323:9323"
     networks:
@@ -13,20 +15,14 @@ services:
       front:
         condition: service_healthy
     hostname: e2e
-    volumes:
-      - ./e2e/playwright-report:/app/playwright-report
-      - ./e2e/test-results:/app/test-results
-      - ./e2e/tests:/app/tests
-      - ./e2e/playwright.config.ts:/app/playwright.config.ts
     tty: "true"
 
   front:
     build:
       context: .
-      dockerfile: docker/front/Dockerfile
+      dockerfile: docker/front_ci/Dockerfile
     ports:
       - "5173:5173"
-      - "6006:6006"
     depends_on:
       go:
         condition: service_healthy
@@ -72,8 +68,6 @@ services:
       LANG: ja_JP.UTF-8
       LANGUAGE: ja_JP:ja
       LC_ALL: ja_JP.UTF-8
-    # volumes:
-    #   - db_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysql", "-uroot", "-p${MYSQL_ROOT_PASSWORD}", "-e", "USE ${MYSQL_DATABASE};"]
       interval: 5s
@@ -84,10 +78,6 @@ services:
       - "3306:3306"
     networks:
       - db_network
-
-# volumes:
-#   db_data:
-#     name: todo-app
 
 networks:
   db_network:

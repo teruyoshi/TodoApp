@@ -3,7 +3,8 @@ import { test, expect } from '@playwright/test'
 test.describe.configure({ mode: 'parallel' })
 
 test('/todo ページ TODO を追加して表示される', async ({ page }) => {
-  await page.goto('http://front:5173/todo')
+  console.log(`${process.env.API_BASE_URL}/todo へ接続`)
+  await page.goto(`${process.env.API_BASE_URL}/todo`)
 
   const body = await page.locator('body')
   console.log('body:', await body.textContent())

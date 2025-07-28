@@ -7,9 +7,6 @@ WORKDIR /app
 COPY ./go/go.mod ./go/go.sum ./
 RUN go mod download
 
-RUN apk add curl
-RUN go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-
 # ソースコードをコピー
 COPY ./go .
 
@@ -18,8 +15,20 @@ RUN mkdir -p app
 # ビルド
 RUN go build -o app/ cmd/todo_app/main.go
 
+
+# ランタイム（最小限）ステージ
+FROM alpine:3.21
+
+WORKDIR /app
+
+# 必要なものだけ追加
+RUN apk add --no-cache curl
+
+# ビルドしたバイナリだけコピー
+COPY --from=build /app/app .
+
 # ポートを指定
 EXPOSE 8080
 
 # エントリーポイント
-CMD ["./app/main"]
+CMD ["./main"]

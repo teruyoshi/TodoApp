@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: docker/e2e/Dockerfile
+    environment:
+      - API_BASE_URL=http://front:5173
     ports:
       - "9323:9323"
     networks:
