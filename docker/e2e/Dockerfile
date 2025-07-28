@@ -4,8 +4,7 @@ RUN mkdir /app
 WORKDIR /app
 COPY ./e2e/ /app/
 
-RUN npm ci
-# RUN npm install --force
+RUN npm install --force
 # RUN npx playwright install
 
 CMD ["tail", "-f", "/dev/null"]

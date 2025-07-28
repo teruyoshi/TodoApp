@@ -56,7 +56,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache-todo
-          key: ${{ runner.os }}-buildx-todo-${{ hashFiles('**/Dockerfile') }}
+          key: ${{ runner.os }}-buildx-todo-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-todo-
 
