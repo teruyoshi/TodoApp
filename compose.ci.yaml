@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: docker/e2e/Dockerfile
+    environment:
+      - API_BASE_URL=http://front:80
     ports:
       - "9323:9323"
     networks:
@@ -25,7 +27,7 @@ services:
       context: .
       dockerfile: docker/front_ci/Dockerfile
     ports:
-      - "5173:80"
+      - "80:80"
     depends_on:
       go:
         condition: service_healthy
