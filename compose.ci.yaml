@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: docker/e2e/Dockerfile
     environment:
-      - API_BASE_URL=http://front:80
+      - API_BASE_URL=http://front:5173
     ports:
       - "9323:9323"
     networks:
@@ -15,11 +15,6 @@ services:
       front:
         condition: service_healthy
     hostname: e2e
-    volumes:
-      - ./e2e/playwright-report:/app/playwright-report
-      - ./e2e/test-results:/app/test-results
-      - ./e2e/tests:/app/tests
-      - ./e2e/playwright.config.ts:/app/playwright.config.ts
     tty: "true"
 
   front:
@@ -27,12 +22,12 @@ services:
       context: .
       dockerfile: docker/front_ci/Dockerfile
     ports:
-      - "80:80"
+      - "5173:5173"
     depends_on:
       go:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "http://localhost:80/todo"]
+      test: ["CMD", "curl", "http://localhost:5173/todo"]
       interval: 5s
       timeout: 60s
       retries: 15

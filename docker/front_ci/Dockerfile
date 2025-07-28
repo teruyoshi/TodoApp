@@ -1,22 +1,25 @@
-# ビルドステージ
-FROM node:22.14-slim AS build
+FROM node:22.14-slim
 
-WORKDIR /app
+ENV NODE_ENV=development
 
-COPY ./front/package*.json ./
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends tini \
+  && apt-get install -y --no-install-recommends curl \
+  && rm -rf /var/lib/apt/lists/*
+
+EXPOSE 5173
+
+WORKDIR /home/node/app/front
+
+RUN mkdir -p /home/node/app/front && chown -R node:node /home/node/app/front
+
+USER node
+
+# 依存関係のキャッシュ活用
+COPY --chown=node:node ./front/package*.json ./
 RUN npm ci
 
-COPY ./front ./
-RUN npm run build
+COPY --chown=node:node ./front ./
 
-# 実行（配信）ステージ
-FROM nginx:1.28-alpine3.21
-
-RUN apk add --no-cache curl
-
-# ビルド成果物（例: Viteなら /app/dist）をNginx公開ディレクトリにコピー
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["npm", "run", "dev"]
