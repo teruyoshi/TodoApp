@@ -1,0 +1,13 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  call-backend-test:
+    uses: ./.github/workflows/backend_test.yaml
+
+  call-frontend-test:
+    uses: ./.github/workflows/frontend_test.yaml
