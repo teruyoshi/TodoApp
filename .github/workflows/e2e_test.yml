@@ -1,9 +1,6 @@
-name: CI
-
+name: e2e-test
 on:
-  pull_request:
-    branches:
-      - main
+  workflow_call:
 
 jobs:
   e2e-test:
@@ -87,76 +84,20 @@ jobs:
           push: false
           cache-from: type=gha,src=/tmp/.buildx-cache-todo
           cache-to: type=gha,dest=/tmp/.buildx-cache-todo,mode=max
-    
-      # - name: Docker Compose Build No Cache
-      #   run: make rebuild
 
       - name: Wait for starting
         run: make up-wait
-
-      - name: Frontend Container Debug Log
-        run: docker compose -f compose.ci.yaml logs front
-
-      - name: Go Container Debug Log
-        run: docker compose -f compose.ci.yaml logs go
-
-      - name: E2E Container Debug Log
-        run: docker compose -f compose.ci.yaml logs e2e
-
-      - name: DB Container Debug Log
-        run: docker compose -f compose.ci.yaml logs db
 
       - name: Docker Container List
         run: make ps
 
       - name: E2E Test (Playwright)
-        run: make e2e-test
+        run: timeout 120s make e2e-test
 
       - name: Output All Container Logs
         if: always()
-        run: docker compose -f compose.ci.yaml logs --no-color
+        run: docker compose -f compose.ci.yaml logs 
 
       - name: Docker Compose Down
         if: always()
         run: make down
-
-  frontend-test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Cache node_modules
-        uses: actions/cache@v4
-        with:
-          path: front/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('front/package-lock.json') }}
-      - run: cd front && npm ci
-      - run: cd front && npm run format
-      - run: cd front && npm run lint
-      - run: cd front && npm run tsc
-      - run: cd front && npm run test
-
-  go-test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-        with:
-          go-version: '1.24'
-
-      - name: Cache Go go_modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-      - run: cd go && go mod download
-      - run: cd go && go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-      - run: cd go && golangci-lint run
-      - run: cd go && go fmt ./...
-      - run: cd go && go test ./...
