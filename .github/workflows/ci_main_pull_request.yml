@@ -1,11 +1,13 @@
-name: CI develop pull request
+name: CI main pull request
 
 on:
   pull_request:
     branches:
-      - develop
+      - main
 
 jobs:
+  call-e2e-test:
+    uses: ./.github/workflows/e2e_test.yaml
   call-backend-test:
     uses: ./.github/workflows/backend_test.yaml
 
