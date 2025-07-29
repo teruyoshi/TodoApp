@@ -88,18 +88,15 @@ jobs:
       - name: Wait for starting
         run: make up-wait
 
-      - name: Debug Log
-        run: make logs
-
       - name: Docker Container List
         run: make ps
 
       - name: E2E Test (Playwright)
-        run: make e2e-test
+        run: timeout 120s make e2e-test
 
       - name: Output All Container Logs
         if: always()
-        run: make logs
+        run: docker compose -f compose.ci.yaml logs 
 
       - name: Docker Compose Down
         if: always()
