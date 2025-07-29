@@ -1,0 +1,24 @@
+name: frontend-test
+on:
+  workflow_call:
+
+jobs:
+  frontend-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: front/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('front/package-lock.json') }}
+      - run: cd front && npm ci
+      - run: cd front && npm run format
+      - run: cd front && npm run lint
+      - run: cd front && npm run tsc
+      - run: cd front && npm run test
