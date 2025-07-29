@@ -7,7 +7,7 @@ on:
 
 jobs:
   call-backend-test:
-    uses: ./.github/workflows/backend_test.yaml
+    uses: ./.github/workflows/backend_test.yml
 
   call-frontend-test:
-    uses: ./.github/workflows/frontend_test.yaml
+    uses: ./.github/workflows/frontend_test.yml

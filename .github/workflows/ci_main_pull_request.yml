@@ -7,9 +7,9 @@ on:
 
 jobs:
   call-e2e-test:
-    uses: ./.github/workflows/e2e_test.yaml
+    uses: ./.github/workflows/e2e_test.yml
   call-backend-test:
-    uses: ./.github/workflows/backend_test.yaml
+    uses: ./.github/workflows/backend_test.yml
 
   call-frontend-test:
-    uses: ./.github/workflows/frontend_test.yaml
+    uses: ./.github/workflows/frontend_test.yml
