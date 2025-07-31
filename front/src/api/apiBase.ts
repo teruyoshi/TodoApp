@@ -1,16 +1,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-const isDocker =
-  window.location.hostname === 'front' || window.location.hostname === 'go'
-
-const API_BASE_URL = isDocker
-  ? 'http://go:8080'
-  : import.meta.env.VITE_API_BASE_URL
+import { getApiBaseUrl } from '@/functions'
 
 export const api = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${API_BASE_URL}/api/v1/`,
+    baseUrl: `${getApiBaseUrl()}/api/v1/`,
     mode: 'cors',
     // prepareHeaders: (headers) => {
     //   headers.set('Access-Control-Allow-Origin', 'http://localhost:5173/')
