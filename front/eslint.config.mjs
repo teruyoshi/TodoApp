@@ -1,20 +1,20 @@
 // For more info, see https://github.com/storybookjs/eslint-plugin-storybook#configuration-flat-config-format
-import storybook from 'eslint-plugin-storybook';
+import storybook from 'eslint-plugin-storybook'
 
-import js from '@eslint/js';
+import js from '@eslint/js'
 
-import tsParser from '@typescript-eslint/parser';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
-import jsxA11y from 'eslint-plugin-jsx-a11y';
-import _import from 'eslint-plugin-import';
-import jest from 'eslint-plugin-jest';
-import testingLibrary from 'eslint-plugin-testing-library';
-import prettier from 'eslint-plugin-prettier';
-import prettierConfig from 'eslint-config-prettier';
-import globals from 'globals';
+import tsParser from '@typescript-eslint/parser'
+import typescriptEslint from '@typescript-eslint/eslint-plugin'
+import react from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import _import from 'eslint-plugin-import'
+import jest from 'eslint-plugin-jest'
+import testingLibrary from 'eslint-plugin-testing-library'
+import prettier from 'eslint-plugin-prettier'
+import prettierConfig from 'eslint-config-prettier'
+import globals from 'globals'
 
 export default [
   {
@@ -158,7 +158,27 @@ export default [
     languageOptions: {
       parser: tsParser,
       parserOptions: {
-        project: ['./tsconfig.eslint.json'],
+        project: ['./tsconfig.test.json'],
+      },
+      globals: {
+        ...globals.jest,
+      },
+    },
+  },
+  {
+    files: ['jest.setup.js'],
+    plugins: {
+      jest,
+      'testing-library': testingLibrary,
+    },
+    rules: {
+      ...jest.configs.recommended.rules,
+      ...testingLibrary.configs.react.rules,
+    },
+    languageOptions: {
+      parser: undefined,
+      parserOptions: {
+        project: undefined,
       },
       globals: {
         ...globals.jest,
@@ -166,4 +186,4 @@ export default [
     },
   },
   ...storybook.configs['flat/recommended'],
-];
+]

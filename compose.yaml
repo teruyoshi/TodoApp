@@ -44,6 +44,11 @@ services:
       - ./front:/home/node/app/front
     tty: "true"
 
+  front-deploy:
+    build:
+      context: .
+      dockerfile: docker/front_deploy/Dockerfile
+    tty: "true"
   go:
     build:
       context: .
