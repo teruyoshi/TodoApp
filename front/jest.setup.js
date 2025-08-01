@@ -9,6 +9,11 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/ja'
 dayjs.locale('ja')
 
+jest.mock('@/functions/getBaseUrl', () => ({
+  __esModule: true,
+  default: () => 'http://localhost:8080',
+}))
+
 // // Node 環境下で必要な TextEncoder と TextDecoder をポリフィル
 // import { TextEncoder, TextDecoder } from 'util'
 // if (typeof global.TextEncoder === 'undefined') {

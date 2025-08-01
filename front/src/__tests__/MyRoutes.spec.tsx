@@ -3,6 +3,13 @@ import { render } from '@testing-library/react'
 
 import { MyRoutes } from '@/routes'
 import { ReduxProvider, DayjsLocalizationProvider } from '@/providers'
+import getBaseUrl from '@/functions/getBaseUrl'
+
+describe('mock', () => {
+  it('モックが効いているか', () => {
+    expect(getBaseUrl()).toBe('http://localhost:8080')
+  })
+})
 
 function setup() {
   const Component = (
