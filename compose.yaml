@@ -26,6 +26,8 @@ services:
     build:
       context: .
       dockerfile: docker/front/Dockerfile
+    env_file:
+      - ./front/.env
     ports:
       - "5173:5173"
       - "6006:6006"
@@ -48,6 +50,8 @@ services:
     build:
       context: .
       dockerfile: docker/front_deploy/Dockerfile
+    env_file:
+      - ./front/.env
     tty: "true"
   go:
     build:
