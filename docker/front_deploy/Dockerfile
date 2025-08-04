@@ -7,7 +7,7 @@ WORKDIR /app
 COPY ./front .
 
 RUN npm ci
-RUN npm run build
+# RUN npm run build
 
 # 必要なら、ここで firebase deploy もOK
 
